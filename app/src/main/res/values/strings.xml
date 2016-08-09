@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">QR Code Scanner</string>
+    <string name="btnStartScanning">START SCANNING</string>
+
+    <string name="title_activity_scanner">Scanner</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="auto_focus">Auto focus</string>
+    <string name="use_flash">Use flash</string>
+    <string name="last_scanned_code">LAST SCANNED CODE:</string>
+    <string name="code_text_data">Code data: </string>
+    <string name="barcode_text_result_empty">empty</string>
+    <string name="navigation_drawer_open">Menu open</string>
+    <string name="navigation_drawer_close">Menu close</string>
+</resources>

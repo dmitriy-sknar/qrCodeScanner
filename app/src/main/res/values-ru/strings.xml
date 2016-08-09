@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="btnStartScanning">СКАНИРОВАТЬ</string>
+    <string name="auto_focus">Включить автофокус</string>
+    <string name="use_flash">Включить вспышку</string>
+    <string name="last_scanned_code">ПОСЛЕДНИЙ КОД:</string>
+    <string name="code_text_data">Данные кода: </string>
+    <string name="barcode_text_result_empty">пока пусто</string>
+    <string name="navigation_drawer_open">Menu open</string>
+    <string name="navigation_drawer_close">Menu close</string>
+</resources>
