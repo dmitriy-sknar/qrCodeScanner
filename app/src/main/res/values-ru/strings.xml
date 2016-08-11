@@ -6,6 +6,9 @@
     <string name="last_scanned_code">ПОСЛЕДНИЙ КОД:</string>
     <string name="code_text_data">Данные кода: </string>
     <string name="barcode_text_result_empty">пока пусто</string>
-    <string name="navigation_drawer_open">Menu open</string>
-    <string name="navigation_drawer_close">Menu close</string>
+    <string name="navigation_drawer_open">Меню открыто</string>
+    <string name="navigation_drawer_close">Меню закрыто</string>
+    <string name="nav_detail_description">Сканируйте любой штрих и qr код.</string>
+    <string name="tab_one_title">Сканирование</string>
+    <string name="tab_two_title">История</string>
 </resources>

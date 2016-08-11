@@ -33,7 +33,6 @@ import app.num.barcodescannerproject.R;
 /**
  * Created by disknar on 01.08.2016.
  */
-// In this case, the fragment displays simple text based on the page
 public class ScanFragment extends Fragment {
 
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -68,7 +67,10 @@ public class ScanFragment extends Fragment {
 
         image = (ImageView) view.findViewById(R.id.scannedImage);
         codeText = (TextView) view.findViewById(R.id.barcode_text_result);
+
+        //Todo make image from history. If history is empty, show some text: "No scanned codes yet"
 //        setBlankQrcode();
+
         autoFocus = (CompoundButton) view.findViewById(R.id.auto_focus_checkbox);
         useFlash = (CompoundButton) view.findViewById(R.id.use_flash_checkbox);
 
@@ -76,9 +78,9 @@ public class ScanFragment extends Fragment {
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent scanInt = new Intent(getActivity(), Scanner.class);
-                scanInt.putExtra(Scanner.AutoFocus, autoFocus.isChecked());
-                scanInt.putExtra(Scanner.UseFlash, useFlash.isChecked());
+                Intent scanInt = new Intent(getActivity(), ScanFragmentScanner.class);
+                scanInt.putExtra(ScanFragmentScanner.AutoFocus, autoFocus.isChecked());
+                scanInt.putExtra(ScanFragmentScanner.UseFlash, useFlash.isChecked());
                 startActivityForResult(scanInt, 1);
             }
         });

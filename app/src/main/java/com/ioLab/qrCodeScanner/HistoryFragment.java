@@ -17,13 +17,11 @@ import app.num.barcodescannerproject.R;
 /**
  * Created by disknar on 01.08.2016.
  */
-// In this case, the fragment displays simple text based on the page
+
 public class HistoryFragment extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";
-
     private int mPage;
     private ArrayAdapter<String> mHistoryAdapter;
-
 
     public static HistoryFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -42,7 +40,8 @@ public class HistoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-// Create some dummy data for the ListView.  Here's a sample weekly forecast
+
+// Some dummy data for the ListView while history DB is not created
         String[] data = {
                 "Scan 1",
                 "Scan 2",
@@ -55,21 +54,19 @@ public class HistoryFragment extends Fragment {
         };
         List<String> dummyHistory = new ArrayList<String>(Arrays.asList(data));
 
-        // Now that we have some dummy forecast data, create an ArrayAdapter.
-        // The ArrayAdapter will take data from a source (like our dummy forecast) and
-        // use it to populate the ListView it's attached to.
         mHistoryAdapter =
                 new ArrayAdapter<String>(
                         getActivity(), // The current context (this activity)
-                        R.layout.history_list_item, // The name of the layout ID.
+                        R.layout.fr_history_page_list_item, // The name of the layout ID.
                         R.id.list_item_history_textview, // The ID of the textview to populate.
                         dummyHistory);
-
         View rootView = inflater.inflate(R.layout.fr_history_page, container, false);
 
         // Get a reference to the ListView, and attach this adapter to it.
         ListView listView = (ListView) rootView.findViewById(R.id.listview_history);
         listView.setAdapter(mHistoryAdapter);
+
+        //Todo create new details activity
 //        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 //            @Override
@@ -80,7 +77,6 @@ public class HistoryFragment extends Fragment {
 //                startActivity(intent);
 //            }
 //        });
-
         return rootView;
     }
 }

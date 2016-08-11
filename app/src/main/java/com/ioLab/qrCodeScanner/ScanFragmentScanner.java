@@ -13,10 +13,9 @@ import com.google.zxing.Result;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 /**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
+ * Created by disknar on 01.08.2016.
  */
-public class Scanner extends FragmentActivity implements ZXingScannerView.ResultHandler{
+public class ScanFragmentScanner extends FragmentActivity implements ZXingScannerView.ResultHandler{
 
     public static final String AutoFocus = "AutoFocus";
     public static final String UseFlash = "UseFlash";
@@ -45,6 +44,7 @@ public class Scanner extends FragmentActivity implements ZXingScannerView.Result
     @Override
     public void handleResult(Result rawResult) {
 
+        //Todo need help how to save scanned real image to show in history. Please help!
 //        View myBarCodeView = mScannerView.getRootView();
 //        myBarCodeView.setDrawingCacheEnabled(true);
 //        mScannerView.setDrawingCacheEnabled(true);

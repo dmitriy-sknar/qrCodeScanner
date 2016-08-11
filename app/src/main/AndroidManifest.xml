@@ -18,10 +18,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ioLab.qrCodeScanner.Scanner"
+            android:name="com.ioLab.qrCodeScanner.ScanFragmentScanner"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_scanner"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme"/>
     </application>
 
 </manifest>
