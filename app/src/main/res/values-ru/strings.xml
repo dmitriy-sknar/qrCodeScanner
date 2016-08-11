@@ -8,7 +8,12 @@
     <string name="barcode_text_result_empty">пока пусто</string>
     <string name="navigation_drawer_open">Меню открыто</string>
     <string name="navigation_drawer_close">Меню закрыто</string>
-    <string name="nav_detail_description">Сканируйте любой штрих и qr код.</string>
+    <string name="nav_detail_description">Сканируйте любой штрих и qr код</string>
     <string name="tab_one_title">Сканирование</string>
     <string name="tab_two_title">История</string>
+    <string name="scan_dialog_title">Код распознан:</string>
+    <string name="scan_dialog_btn_save_result">Сохранить</string>
+    <string name="scan_dialog_btn_cancel">Отменить</string>
+    <string name="scan_dialog_btn_rescan">Пересканировать</string>
+    <string name="toast_scan_cancel">Сканирование отменено</string>
 </resources>

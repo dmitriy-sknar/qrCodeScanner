@@ -16,4 +16,9 @@
     <string name="nav_detail_description">Scan any bar and qr codes, save and share them</string>
     <string name="tab_one_title">Scanning</string>
     <string name="tab_two_title">History</string>
+    <string name="scan_dialog_title">Scan result</string>
+    <string name="scan_dialog_btn_save_result">Save result</string>
+    <string name="scan_dialog_btn_cancel">Cancel</string>
+    <string name="scan_dialog_btn_rescan">Rescan</string>
+    <string name="toast_scan_cancel">Scanning canceled</string>
 </resources>
