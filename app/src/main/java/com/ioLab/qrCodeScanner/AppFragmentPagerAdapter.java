@@ -12,8 +12,8 @@ import app.num.barcodescannerproject.R;
  */
 public class AppFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 2;
-    String tabOneTitle;
-    String tabTwoTitle;
+    private String tabOneTitle;
+    private String tabTwoTitle;
     private Context mContext;
 
     public AppFragmentPagerAdapter(FragmentManager fm, Context context) {

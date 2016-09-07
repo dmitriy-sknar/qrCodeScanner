@@ -2,14 +2,22 @@ package com.ioLab.qrCodeScanner;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.ioLab.qrCodeScanner.Utils.History;
+import com.ioLab.qrCodeScanner.Utils.MyQRCode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import app.num.barcodescannerproject.R;
@@ -18,10 +26,15 @@ import app.num.barcodescannerproject.R;
  * Created by disknar on 01.08.2016.
  */
 
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends Fragment implements ListView.OnItemClickListener{
     public static final String ARG_PAGE = "ARG_PAGE";
+    final String LOG_TAG = "ioLabLog";
     private int mPage;
     private ArrayAdapter<String> mHistoryAdapter;
+    private List<MyQRCode> myQRCodes;
+    private List<String> codesHistory;
+    private History history;
+    private ListView listView;
 
     public static HistoryFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -35,48 +48,103 @@ public class HistoryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARG_PAGE);
+        setHasOptionsMenu(true);
+        history = new History(getContext());
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.history_fragment_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_clear_history_db) {
+
+            history.clearDB();
+            refreshHistoryList(); //refresh listView
+
+            String historyCleared = getResources().getString(R.string.history_cleared);
+            Toast.makeText(getActivity(), historyCleared, Toast.LENGTH_LONG).show();
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-// Some dummy data for the ListView while history DB is not created
-        String[] data = {
-                "Scan 1",
-                "Scan 2",
-                "Scan 3",
-                "Scan 4",
-                "Scan 5",
-                "Scan 6",
-                "Scan 7",
-                "Scan 8",
-        };
-        List<String> dummyHistory = new ArrayList<String>(Arrays.asList(data));
+        myQRCodes = history.getAllCodesFromDB();
+        codesHistory = new ArrayList<>();
 
-        mHistoryAdapter =
-                new ArrayAdapter<String>(
-                        getActivity(), // The current context (this activity)
-                        R.layout.fr_history_page_list_item, // The name of the layout ID.
-                        R.id.list_item_history_textview, // The ID of the textview to populate.
-                        dummyHistory);
+        if (myQRCodes != null) {
+            for (MyQRCode mc : myQRCodes) {
+                codesHistory.add(mc.getName());
+            }
+        }
+        else {
+            //todo change translation to values
+            codesHistory.add(getResources().getString(R.string.history_is_empty));
+        }
+
+        mHistoryAdapter = new ArrayAdapter<String>(
+                getActivity(), // The current context (this activity)
+                R.layout.fr_history_page_list_item, // The name of the layout ID.
+                R.id.list_item_history_textview, // The ID of the textview to populate.
+                codesHistory);
+
         View rootView = inflater.inflate(R.layout.fr_history_page, container, false);
-
         // Get a reference to the ListView, and attach this adapter to it.
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_history);
+        listView = (ListView) rootView.findViewById(R.id.listview_history);
         listView.setAdapter(mHistoryAdapter);
 
-        //Todo create new details activity
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                String forecast = mHistoryAdapter.getItem(position);
-//                Intent intent = new Intent(getActivity(), DetailActivity.class)
-//                        .putExtra(Intent.EXTRA_TEXT, forecast);
-//                startActivity(intent);
-//            }
-//        });
         return rootView;
+    }
+
+    //Todo create new details activity
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+//                String code = mHistoryAdapter.getItem(position);
+//                Intent intent = new Intent(getActivity(), DetailActivity.class)
+//                        .putExtra(Intent.EXTRA_TEXT, code);
+//                startActivity(intent);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(LOG_TAG, "HistoryFragment onResume");
+    }
+
+    public void refreshHistoryList(){
+        if(history == null){
+            history = new History(getContext());
+        }
+        myQRCodes = history.getAllCodesFromDB();
+        codesHistory = new ArrayList<>();
+
+        if (myQRCodes != null) {
+            for (MyQRCode mc : myQRCodes) {
+                codesHistory.add(mc.getName());
+            }
+        }
+        else codesHistory.add(getResources().getString(R.string.history_is_empty));
+
+        mHistoryAdapter.clear();
+        mHistoryAdapter.addAll(codesHistory);
+        mHistoryAdapter.notifyDataSetChanged();
+        listView.invalidateViews();
+        listView.refreshDrawableState();
+    }
+
+    public interface OnHistoryChangedListener {
+        void onHistoryChange();
     }
 }

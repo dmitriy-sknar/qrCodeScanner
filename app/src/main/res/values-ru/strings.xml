@@ -16,4 +16,8 @@
     <string name="scan_dialog_btn_cancel">Отменить</string>
     <string name="scan_dialog_btn_rescan">Пересканировать</string>
     <string name="toast_scan_cancel">Сканирование отменено</string>
+    <string name="splash_please_wait">Загрузка...</string>
+    <string name="clear_history_db">Очистить историю</string>
+    <string name="history_cleared">История очищена</string>
+    <string name="history_is_empty">История пуста</string>
 </resources>

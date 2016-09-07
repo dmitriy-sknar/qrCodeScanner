@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.google.zxing.Result;
 
+import app.num.barcodescannerproject.R;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 /**
@@ -22,7 +25,10 @@ public class ScanFragmentScanner extends FragmentActivity implements ZXingScanne
 
     private ZXingScannerView mScannerView;
     private Result result;
-//    private Bitmap mBitmap;
+    private Bitmap mBitmap; //temporary
+    private Bitmap mBitmap2; //temporary
+
+    //    private Bitmap mBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +39,7 @@ public class ScanFragmentScanner extends FragmentActivity implements ZXingScanne
         }
         setContentView(mScannerView);
         // read parameters from the intent used to launch the activity.
-        boolean autoFocus = getIntent().getBooleanExtra(AutoFocus, false);
+        boolean autoFocus = getIntent().getBooleanExtra(AutoFocus, true);
         boolean useFlash = getIntent().getBooleanExtra(UseFlash, false);
         mScannerView.setResultHandler(this); // Register ourselves as a handler for scan results.
         mScannerView.setFlash(useFlash);
@@ -45,11 +51,13 @@ public class ScanFragmentScanner extends FragmentActivity implements ZXingScanne
     public void handleResult(Result rawResult) {
 
         //Todo need help how to save scanned real image to show in history. Please help!
-//        View myBarCodeView = mScannerView.getRootView();
-//        myBarCodeView.setDrawingCacheEnabled(true);
-//        mScannerView.setDrawingCacheEnabled(true);
-        //Save it in bitmap
-//        mBitmap = myBarCodeView.getDrawingCache(true);
+        mScannerView.setDrawingCacheEnabled(true);
+        View myBarCodeView = mScannerView.getRootView();
+        myBarCodeView.setDrawingCacheEnabled(true);
+        mBitmap = myBarCodeView.getDrawingCache();
+        mBitmap2 = mScannerView.getDrawingCache();//Save it in bitmap
+        mScannerView.setDrawingCacheEnabled(false);
+        myBarCodeView.setDrawingCacheEnabled(false);
 
         result = rawResult;
         Log.e("handler", rawResult.getText()); // Prints scan results
@@ -58,7 +66,12 @@ public class ScanFragmentScanner extends FragmentActivity implements ZXingScanne
         StringBuilder sb = new StringBuilder();
         sb.append(rawResult.getText()).append("\n").append("Type: ").append(rawResult.getBarcodeFormat().toString());
 
-        showDialog(this, "Scan Result", sb.toString(), "Save result", "Cancel", "Rescan");
+        String dialogTitle = getResources().getString(R.string.scan_dialog_title);
+        String dialogBtnSaveResult = getResources().getString(R.string.scan_dialog_btn_save_result);
+        String dialogBtnCancel = getResources().getString(R.string.scan_dialog_btn_cancel);
+        String dialogBtnRescan = getResources().getString(R.string.scan_dialog_btn_rescan);
+
+        showDialog(this, dialogTitle, sb.toString(), dialogBtnSaveResult, dialogBtnCancel, dialogBtnRescan);
         mScannerView.stopCameraPreview();
     }
 

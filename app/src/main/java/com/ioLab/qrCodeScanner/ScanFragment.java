@@ -3,8 +3,6 @@ package com.ioLab.qrCodeScanner;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,18 +13,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
+import com.ioLab.qrCodeScanner.Utils.History;
+import com.ioLab.qrCodeScanner.Utils.MyQRCode;
+import com.ioLab.qrCodeScanner.Utils.ZXingUtils;
 
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.Calendar;
 
 import app.num.barcodescannerproject.R;
 
@@ -69,7 +65,7 @@ public class ScanFragment extends Fragment {
         codeText = (TextView) view.findViewById(R.id.barcode_text_result);
 
         //Todo make image from history. If history is empty, show some text: "No scanned codes yet"
-//        setBlankQrcode();
+//        ZXingUtils.setBlankQrcode(getContext());
 
         autoFocus = (CompoundButton) view.findViewById(R.id.auto_focus_checkbox);
         useFlash = (CompoundButton) view.findViewById(R.id.use_flash_checkbox);
@@ -95,7 +91,7 @@ public class ScanFragment extends Fragment {
                 String result = data.getExtras().get("ScanResultText").toString();
                 codeText.setText(result);
                 BarcodeFormat barcodeType = (BarcodeFormat) data.getExtras().get("ScanResultFormat");
-                Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
 
                 Display display = getActivity().getWindowManager().getDefaultDisplay();
                 Point size = new Point();
@@ -105,90 +101,35 @@ public class ScanFragment extends Fragment {
                 float barcodeSize = width > height ? width : height;
                 int barcodeSizeInt = Math.round(barcodeSize);
                 try {
-                    Bitmap bitmap = encodeAsBitmap(result, barcodeType, barcodeSizeInt, barcodeSizeInt);
+                    Bitmap bitmap = ZXingUtils.encodeAsBitmap(result, barcodeType, barcodeSizeInt, barcodeSizeInt);
                     image.setImageBitmap(bitmap);
                 } catch (WriterException e) {
                     e.printStackTrace();
                 }
-//                byte[] arr = (byte[]) data.getExtras().get("ScanResultRawBytes");
-//                Bitmap bmp = BitmapFactory.decodeByteArray(arr,0,arr.length);
+
 //                Bitmap bitmap = (Bitmap) data.getExtras().get("ScanResultBitmap");
 //                image.setImageBitmap(bitmap);
 
+                MyQRCode myQRCode = new MyQRCode(getContext());
+                myQRCode.setName(result);
+                myQRCode.setCodeType(barcodeType.toString());
+                myQRCode.setComments("");
+                myQRCode.setDateOfScanning(Calendar.getInstance().getTime());
+
+                History history = new History(getContext());
+                history.insertCodeToDB(myQRCode);
+
+                //todo check this to work
+                HistoryFragment.OnHistoryChangedListener listener = (HistoryFragment.OnHistoryChangedListener) getActivity();
+                listener.onHistoryChange();
+
             } else if (resultCode == Activity.RESULT_CANCELED){
-                Toast.makeText(getContext(), "Scanning canceled", Toast.LENGTH_LONG).show();
+                String scanCancel = getResources().getString(R.string.toast_scan_cancel);
+                Toast.makeText(getContext(), scanCancel, Toast.LENGTH_LONG).show();
             }
         }
     }
 
-    private Bitmap encodeAsBitmap(String code, BarcodeFormat format, int img_width, int img_height) throws WriterException {
-        if (code == null) {
-            return null;
-        }
-        Map<EncodeHintType, Object> hints = null;
-        String encoding = guessAppropriateEncoding(code);
-        if (encoding != null) {
-            hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
-            hints.put(EncodeHintType.CHARACTER_SET, encoding);
-        }
-        MultiFormatWriter writer = new MultiFormatWriter();
-        BitMatrix result;
-        try {
-            result = writer.encode(code, format, img_width, img_height, hints);
-        } catch (IllegalArgumentException iae) {
-            // Unsupported format
-            return null;
-        }
-        int width = result.getWidth();
-        int height = result.getHeight();
-        int[] pixels = new int[width * height];
-        for (int y = 0; y < height; y++) {
-            int offset = y * width;
-            for (int x = 0; x < width; x++) {
-                pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
-            }
-        }
-
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-        return bitmap;
-    }
-
-    private static String guessAppropriateEncoding(CharSequence contents) {
-        // Very crude at the moment
-        for (int i = 0; i < contents.length(); i++) {
-            if (contents.charAt(i) > 0xFF) {
-                return "UTF-8";
-            }
-        }
-        return null;
-    }
-
-    //ToDo finish blanck picture creation
-    private Bitmap setBlankQrcode(){
-        TextView tv = new TextView(getContext());
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(80, 100);
-        tv.setLayoutParams(layoutParams);
-        tv.setText("Not scanned yet");
-        tv.setTextColor(Color.BLACK);
-        tv.setBackgroundColor(Color.TRANSPARENT);
-
-        Bitmap testB;
-
-        testB = Bitmap.createBitmap(80, 100, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(testB);
-        tv.layout(0, 0, 80, 100);
-        tv.draw(c);
-
-        ImageView iv = image;
-        iv.setLayoutParams(layoutParams);
-        iv.setBackgroundColor(Color.GRAY);
-        iv.setImageBitmap(testB);
-        iv.setMaxHeight(80);
-        iv.setMaxWidth(80);
-
-        return testB;
-    }
 
     //ToDo insert in onActivityCreated code to restore barcode picture and text after rotation
     @Override

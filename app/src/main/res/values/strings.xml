@@ -21,4 +21,8 @@
     <string name="scan_dialog_btn_cancel">Cancel</string>
     <string name="scan_dialog_btn_rescan">Rescan</string>
     <string name="toast_scan_cancel">Scanning canceled</string>
+    <string name="splash_please_wait">Loading...</string>
+    <string name="clear_history_db">Clear history</string>
+    <string name="history_cleared">History cleared</string>
+    <string name="history_is_empty">History is empty</string>
 </resources>

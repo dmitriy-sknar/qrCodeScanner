@@ -2,20 +2,25 @@ package com.ioLab.qrCodeScanner;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import app.num.barcodescannerproject.R;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
+        HistoryFragment.OnHistoryChangedListener {
+
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
     android.support.v4.app.FragmentManager mFragmentManager;
     android.support.v4.app.FragmentTransaction mFragmentTransaction;
-
+    final String LOG_TAG = "ioLabLog";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
+
+        Log.d(LOG_TAG, "MainActivity onCreate");
     }
 
     //ToDo Setup click events on the Navigation Drawer View Items.
@@ -92,5 +99,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onHistoryChange() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        // get link to HistoryFgagment by ID
+        TabFragment tabFragment = (TabFragment) fragmentManager
+                .findFragmentById(R.id.containerView);
+        HistoryFragment historyFragment = (HistoryFragment) tabFragment.getChildFragmentManager()
+                .findFragmentById(R.id.viewpager);
+
+        // Refreshing listView with changed data
+        if (historyFragment != null)
+            historyFragment.refreshHistoryList();
     }
 }
