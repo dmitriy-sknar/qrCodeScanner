@@ -14,7 +14,7 @@ import java.util.List;
  * Created by disknar on 12.08.2016.
  */
 public class History {
-    final String LOG_TAG = "ioLabLog";
+    private final String LOG_TAG = "ioLabLog";
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private Cursor cursor;
@@ -87,7 +87,7 @@ public class History {
     }
 
     public MyQRCode getCodeFromDB(int position){
-        MyQRCode myQRCode = null;
+        MyQRCode myQRCode;
         if (myQRCodes.size() != 0) {
             myQRCode = myQRCodes.get(position);
         }

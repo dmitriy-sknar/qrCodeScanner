@@ -25,4 +25,7 @@
     <string name="clear_history_db">Clear history</string>
     <string name="history_cleared">History cleared</string>
     <string name="history_is_empty">History is empty</string>
+    <string name="splash_screen_alert_dialog">Error</string>
+    <string name="splash_screen_alert_dialog_message">Camera is missing on your device. Sorry, can not proceed.</string>
+    <string name="ok_button">OK</string>
 </resources>

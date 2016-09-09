@@ -5,6 +5,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -25,10 +29,8 @@ public class ScanFragmentScanner extends FragmentActivity implements ZXingScanne
 
     private ZXingScannerView mScannerView;
     private Result result;
-    private Bitmap mBitmap; //temporary
-    private Bitmap mBitmap2; //temporary
 
-    //    private Bitmap mBitmap;
+    GLSurfaceView gl = new GLSurfaceView(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +56,24 @@ public class ScanFragmentScanner extends FragmentActivity implements ZXingScanne
         mScannerView.setDrawingCacheEnabled(true);
         View myBarCodeView = mScannerView.getRootView();
         myBarCodeView.setDrawingCacheEnabled(true);
-        mBitmap = myBarCodeView.getDrawingCache();
-        mBitmap2 = mScannerView.getDrawingCache();//Save it in bitmap
+        Bitmap mBitmap = myBarCodeView.getDrawingCache();
+        Bitmap mBitmap2 = mScannerView.getDrawingCache();//Save it in bitmap
         mScannerView.setDrawingCacheEnabled(false);
         myBarCodeView.setDrawingCacheEnabled(false);
+
+        // create bitmap screen capture
+        View v1 = getWindow().getDecorView().getRootView();
+        v1.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+        v1.setDrawingCacheEnabled(false);
+
+        Bitmap b1 = takeScreenshot(myBarCodeView, Bitmap.Config.ARGB_8888);
+        Bitmap b2 = takeScreenshot(mScannerView, Bitmap.Config.ARGB_8888);
+        Bitmap b3 = takeScreenshot(v1, Bitmap.Config.ARGB_8888);
+
+
+        gl.setZOrderOnTop(true);
+
 
         result = rawResult;
         Log.e("handler", rawResult.getText()); // Prints scan results
@@ -75,7 +91,22 @@ public class ScanFragmentScanner extends FragmentActivity implements ZXingScanne
         mScannerView.stopCameraPreview();
     }
 
-    private AlertDialog showDialog(final Activity act, CharSequence title, CharSequence message, CharSequence buttonYes, CharSequence buttonNo, CharSequence buttonRescan ) {
+    public static Bitmap takeScreenshot(View view, Bitmap.Config quality) {
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), quality);
+        Canvas canvas = new Canvas(bitmap);
+
+        Drawable backgroundDrawable = view.getBackground();
+        if (backgroundDrawable != null) {
+            backgroundDrawable.draw(canvas);
+        } else {
+            canvas.drawColor(Color.WHITE);
+        }
+        view.draw(canvas);
+
+        return bitmap;
+    }
+
+    private void showDialog(final Activity act, CharSequence title, CharSequence message, CharSequence buttonYes, CharSequence buttonNo, CharSequence buttonRescan ) {
         AlertDialog.Builder downloadDialog = new AlertDialog.Builder(act);
         downloadDialog.setTitle(title);
         downloadDialog.setMessage(message);
@@ -101,7 +132,7 @@ public class ScanFragmentScanner extends FragmentActivity implements ZXingScanne
                 resumeScanning();
             }
         });
-        return downloadDialog.show();
+        downloadDialog.show();
     }
 
     public void resumeScanning(){

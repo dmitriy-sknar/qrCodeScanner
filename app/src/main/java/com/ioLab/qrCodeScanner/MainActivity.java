@@ -109,9 +109,7 @@ public class MainActivity extends AppCompatActivity implements
                 .findFragmentById(R.id.containerView);
         HistoryFragment historyFragment = (HistoryFragment) tabFragment.getChildFragmentManager()
                 .findFragmentById(R.id.viewpager);
-
         // Refreshing listView with changed data
-        if (historyFragment != null)
-            historyFragment.refreshHistoryList();
+        historyFragment.refreshHistoryList();
     }
 }

@@ -9,7 +9,7 @@ import android.util.Log;
  * Created by disknar on 12.08.2016.
  */
 public class DBHelper extends SQLiteOpenHelper {
-    final String LOG_TAG = "ioLab";
+    private final String LOG_TAG = "ioLab";
 
     public DBHelper(Context context) {
         super(context, "scannedCodesDB", null, 1);

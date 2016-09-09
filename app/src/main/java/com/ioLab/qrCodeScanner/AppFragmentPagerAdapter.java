@@ -11,7 +11,7 @@ import app.num.barcodescannerproject.R;
  * Created by disknar on 01.08.2016.
  */
 public class AppFragmentPagerAdapter extends FragmentPagerAdapter {
-    final int PAGE_COUNT = 2;
+    private final int PAGE_COUNT = 2;
     private String tabOneTitle;
     private String tabTwoTitle;
     private Context mContext;

@@ -1,4 +1,4 @@
-package app.num.barcodescannerproject;
+package com.ioLab.qrCodeScanner;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

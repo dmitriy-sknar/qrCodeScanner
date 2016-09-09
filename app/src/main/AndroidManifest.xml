@@ -13,24 +13,32 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.ioLab.qrCodeScanner.SplashScreen"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ioLab.qrCodeScanner.MainActivity"/>
+            android:name="com.ioLab.qrCodeScanner.MainActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name="com.ioLab.qrCodeScanner.ScanFragmentScanner"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_scanner"
-            android:theme="@style/FullscreenTheme">
+            android:theme="@style/FullscreenTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.extras.CAMERA" />
                 <action android:name="com.ioLab.qrCodeScanner.scan" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.ioLab.qrCodeScanner.CodeDetails"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 </manifest>

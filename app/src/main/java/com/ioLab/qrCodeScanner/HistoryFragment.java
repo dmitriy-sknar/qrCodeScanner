@@ -1,5 +1,6 @@
 package com.ioLab.qrCodeScanner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -26,9 +27,9 @@ import app.num.barcodescannerproject.R;
  * Created by disknar on 01.08.2016.
  */
 
-public class HistoryFragment extends Fragment implements ListView.OnItemClickListener{
-    public static final String ARG_PAGE = "ARG_PAGE";
-    final String LOG_TAG = "ioLabLog";
+public class HistoryFragment extends Fragment {
+    private static final String ARG_PAGE = "ARG_PAGE";
+    private final String LOG_TAG = "ioLabLog";
     private int mPage;
     private ArrayAdapter<String> mHistoryAdapter;
     private List<MyQRCode> myQRCodes;
@@ -59,9 +60,7 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
         if (id == R.id.action_clear_history_db) {
 
@@ -89,7 +88,6 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
             }
         }
         else {
-            //todo change translation to values
             codesHistory.add(getResources().getString(R.string.history_is_empty));
         }
 
@@ -104,17 +102,21 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
         listView = (ListView) rootView.findViewById(R.id.listview_history);
         listView.setAdapter(mHistoryAdapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MyQRCode myQRCode = myQRCodes.get(position);
+                Intent intent = new Intent(getActivity(), CodeDetails.class);
+                intent.putExtra("name", myQRCode.getName());
+                intent.putExtra("format", myQRCode.getCodeType());
+                intent.putExtra("comments", myQRCode.getComments());
+                intent.putExtra("date", myQRCode.getDateOfScanning().getTime()/1000);
+
+                startActivity(intent);
+            }
+        });
+
         return rootView;
-    }
-
-    //Todo create new details activity
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-//                String code = mHistoryAdapter.getItem(position);
-//                Intent intent = new Intent(getActivity(), DetailActivity.class)
-//                        .putExtra(Intent.EXTRA_TEXT, code);
-//                startActivity(intent);
     }
 
     @Override

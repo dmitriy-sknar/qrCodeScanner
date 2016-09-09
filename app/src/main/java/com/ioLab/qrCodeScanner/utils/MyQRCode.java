@@ -30,11 +30,20 @@ public class MyQRCode implements Serializable{
         this.comments = comments;
     }
 
+    public MyQRCode(Context context, String name, Date dateOfScanning, String codeType, String comments) {
+        this.currentLocale = context.getResources().getConfiguration().locale;
+        this.name = name;
+        this.dateOfScanning = dateOfScanning;
+        this.codeType = codeType;
+        this.comments = comments;
+    }
+
+    @Nullable
     public String getComments() {
         return comments;
     }
 
-    public void setComments(String comments) {
+    public void setComments(@Nullable String comments) {
         this.comments = comments;
     }
 

@@ -20,4 +20,6 @@
     <string name="clear_history_db">Очистить историю</string>
     <string name="history_cleared">История очищена</string>
     <string name="history_is_empty">История пуста</string>
+    <string name="splash_screen_alert_dialog">Ошибка!</string>
+    <string name="splash_screen_alert_dialog_message">Отсутствует камера в вашем устройстве. Дальнейшая работа не возможна.</string>
 </resources>

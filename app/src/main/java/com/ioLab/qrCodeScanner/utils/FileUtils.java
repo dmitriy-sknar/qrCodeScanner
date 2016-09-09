@@ -22,10 +22,10 @@ import java.io.OutputStreamWriter;
  */
 public class FileUtils extends Activity{
 
-    final String LOG_TAG = "ioLogs";
-    final String FILENAME = "generated_barcode";
-    final String DIR_SD = "BarCodes";
-    final String FILENAME_SD = "generated_barcode_SD";
+    private final String LOG_TAG = "ioLogs";
+    private final String FILENAME = "generated_barcode";
+    private final String DIR_SD = "BarCodes";
+    private final String FILENAME_SD = "generated_barcode_SD";
 
     public static File getSDPath() {
         String sdState = android.os.Environment.getExternalStorageState(); //Получаем состояние SD карты (подключена она или нет) - возвращается true и false соответственно

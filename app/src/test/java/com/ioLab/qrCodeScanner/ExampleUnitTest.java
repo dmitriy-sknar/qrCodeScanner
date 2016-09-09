@@ -1,4 +1,4 @@
-package app.num.barcodescannerproject;
+package com.ioLab.qrCodeScanner;
 
 import org.junit.Test;
 

@@ -31,7 +31,7 @@ import app.num.barcodescannerproject.R;
  */
 public class ScanFragment extends Fragment {
 
-    public static final String ARG_PAGE = "ARG_PAGE";
+    private static final String ARG_PAGE = "ARG_PAGE";
     private int mPage;
 
     private ImageView image;
@@ -119,7 +119,7 @@ public class ScanFragment extends Fragment {
                 History history = new History(getContext());
                 history.insertCodeToDB(myQRCode);
 
-                //todo check this to work
+                //get Main activity as a listener (interface) to notify HistoryFragment
                 HistoryFragment.OnHistoryChangedListener listener = (HistoryFragment.OnHistoryChangedListener) getActivity();
                 listener.onHistoryChange();
 

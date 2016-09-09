@@ -16,7 +16,7 @@ import app.num.barcodescannerproject.R;
  */
 public class GeneratorFragment extends Fragment {
 
-    public static final String ARG_PAGE = "ARG_PAGE";
+    private static final String ARG_PAGE = "ARG_PAGE";
     private int mPage;
 
     private ImageView image;
