@@ -3,17 +3,17 @@ package com.ioLab.qrCodeScanner.Utils;
 import android.content.Context;
 import android.support.annotation.Nullable;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Locale;
 
 /**
  * Created by disknar on 12.08.2016.
  */
-public class MyQRCode implements Serializable{
+public class MyQRCode {
 
     private String name;
     private Date dateOfScanning;
+//    private String codeType;
     private String codeType;
     @Nullable
     private String comments;
