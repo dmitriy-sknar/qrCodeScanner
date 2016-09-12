@@ -4,15 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.View;
 
 import com.google.zxing.Result;
 
@@ -29,8 +23,6 @@ public class ScanFragmentScanner extends FragmentActivity implements ZXingScanne
 
     private ZXingScannerView mScannerView;
     private Result result;
-
-    GLSurfaceView gl = new GLSurfaceView(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,27 +45,17 @@ public class ScanFragmentScanner extends FragmentActivity implements ZXingScanne
     public void handleResult(Result rawResult) {
 
         //Todo need help how to save scanned real image to show in history. Please help!
-        mScannerView.setDrawingCacheEnabled(true);
-        View myBarCodeView = mScannerView.getRootView();
-        myBarCodeView.setDrawingCacheEnabled(true);
-        Bitmap mBitmap = myBarCodeView.getDrawingCache();
-        Bitmap mBitmap2 = mScannerView.getDrawingCache();//Save it in bitmap
-        mScannerView.setDrawingCacheEnabled(false);
-        myBarCodeView.setDrawingCacheEnabled(false);
-
-        // create bitmap screen capture
-        View v1 = getWindow().getDecorView().getRootView();
-        v1.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
-        v1.setDrawingCacheEnabled(false);
-
-        Bitmap b1 = takeScreenshot(myBarCodeView, Bitmap.Config.ARGB_8888);
-        Bitmap b2 = takeScreenshot(mScannerView, Bitmap.Config.ARGB_8888);
-        Bitmap b3 = takeScreenshot(v1, Bitmap.Config.ARGB_8888);
-
-
-        gl.setZOrderOnTop(true);
-
+//        View myBarCodeView = mScannerView.getRootView();
+//        View v1 = getWindow().getDecorView().getRootView();
+//        v1.setDrawingCacheEnabled(true);
+//        mScannerView.setDrawingCacheEnabled(true);
+//        myBarCodeView.setDrawingCacheEnabled(true);
+//        Bitmap mBitmap = myBarCodeView.getDrawingCache();
+//        Bitmap mBitmap2 = mScannerView.getDrawingCache();//Save it in bitmap
+//        Bitmap mBitmap3 = Bitmap.createBitmap(v1.getDrawingCache());
+//        mScannerView.setDrawingCacheEnabled(false);
+//        myBarCodeView.setDrawingCacheEnabled(false);
+//        v1.setDrawingCacheEnabled(false);
 
         result = rawResult;
         Log.e("handler", rawResult.getText()); // Prints scan results
@@ -89,21 +71,6 @@ public class ScanFragmentScanner extends FragmentActivity implements ZXingScanne
 
         showDialog(this, dialogTitle, sb.toString(), dialogBtnSaveResult, dialogBtnCancel, dialogBtnRescan);
         mScannerView.stopCameraPreview();
-    }
-
-    public static Bitmap takeScreenshot(View view, Bitmap.Config quality) {
-        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), quality);
-        Canvas canvas = new Canvas(bitmap);
-
-        Drawable backgroundDrawable = view.getBackground();
-        if (backgroundDrawable != null) {
-            backgroundDrawable.draw(canvas);
-        } else {
-            canvas.drawColor(Color.WHITE);
-        }
-        view.draw(canvas);
-
-        return bitmap;
     }
 
     private void showDialog(final Activity act, CharSequence title, CharSequence message, CharSequence buttonYes, CharSequence buttonNo, CharSequence buttonRescan ) {

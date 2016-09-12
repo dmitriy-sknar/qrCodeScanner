@@ -1,5 +1,8 @@
 package com.ioLab.qrCodeScanner;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,14 +14,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ioLab.qrCodeScanner.Utils.History;
+import com.ioLab.qrCodeScanner.Utils.HistoryDataBinder;
 import com.ioLab.qrCodeScanner.Utils.MyQRCode;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import app.num.barcodescannerproject.R;
@@ -29,11 +35,16 @@ import app.num.barcodescannerproject.R;
 
 public class HistoryFragment extends Fragment {
     private static final String ARG_PAGE = "ARG_PAGE";
+    private static final String KEY_NAME = "name";
+    private static final String KEY_CODE_TYPE = "format";
+    private static final String KEY_COMMENTS = "comments";
+    private static final String KEY_DATE = "date";
     private final String LOG_TAG = "ioLabLog";
     private int mPage;
-    private ArrayAdapter<String> mHistoryAdapter;
+//    private ArrayAdapter<String> mHistoryAdapter;
+    private HistoryDataBinder bindingData;
     private List<MyQRCode> myQRCodes;
-    private List<String> codesHistory;
+    private List<HashMap<String, String>> codesHistory;
     private History history;
     private ListView listView;
 
@@ -80,31 +91,78 @@ public class HistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         myQRCodes = history.getAllCodesFromDB();
-        codesHistory = new ArrayList<>();
+
+        List<HashMap<String, String>> codeDataCollection = new ArrayList<>();
+        HashMap<String,String> map;
 
         if (myQRCodes != null) {
-            for (MyQRCode mc : myQRCodes) {
-                codesHistory.add(mc.getName());
+            for (int i = 0; i < myQRCodes.size(); i++) {
+
+                MyQRCode codeItem = myQRCodes.get(i);
+                map = makeDataSet(codeItem);
+
+//Todo delete this after check
+//                map = new HashMap<String, String>();
+//                map.put(KEY_NAME, codeItem.getName());
+//                map.put(KEY_CODE_TYPE, codeItem.getCodeType());
+//                map.put(KEY_COMMENTS, codeItem.getComments());
+//
+//                Date dateOfScanning = codeItem.getDateOfScanning();
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm", getContext().getResources().getConfiguration().locale);
+//                String date = dateFormat.format(dateOfScanning);
+//                map.put(KEY_DATE, date);
+
+                codeDataCollection.add(map);
             }
         }
-        else {
-            codesHistory.add(getResources().getString(R.string.history_is_empty));
+        else{
+            map = new HashMap<String, String>();
+            map.put(KEY_NAME, getResources().getString(R.string.history_is_empty));
+            map.put(KEY_CODE_TYPE, "");
+            map.put(KEY_COMMENTS, "");
+            map.put(KEY_DATE, "");
+
+            codeDataCollection.add(map);
         }
 
-        mHistoryAdapter = new ArrayAdapter<String>(
-                getActivity(), // The current context (this activity)
-                R.layout.fr_history_page_list_item, // The name of the layout ID.
-                R.id.list_item_history_textview, // The ID of the textview to populate.
-                codesHistory);
+        bindingData = new HistoryDataBinder(getActivity(), codeDataCollection);
 
+        Log.i("BEFORE", "<<------------- Before SetAdapter-------------->>");
+
+        //old adapter code
+//        codesHistory = new ArrayList<>();
+//
+//        if (myQRCodes != null) {
+//            for (MyQRCode mc : myQRCodes) {
+//                codesHistory.add(mc.getName());
+//            }
+//        }
+//        else {
+//            codesHistory.add(getResources().getString(R.string.history_is_empty));
+//        }
+//
+//        mHistoryAdapter = new ArrayAdapter<String>(
+//                getActivity(), // The current context (this activity)
+//                R.layout.fr_history_page_list_item, // The name of the layout ID.
+//                R.id.list_item_history_textview, // The ID of the textview to populate.
+//                codesHistory);
         View rootView = inflater.inflate(R.layout.fr_history_page, container, false);
         // Get a reference to the ListView, and attach this adapter to it.
         listView = (ListView) rootView.findViewById(R.id.listview_history);
-        listView.setAdapter(mHistoryAdapter);
+//        listView.setAdapter(mHistoryAdapter); //old adapter
+        listView.setAdapter(bindingData);
+
+        Log.i("AFTER", "<<------------- After SetAdapter-------------->>");
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if(myQRCodes == null){
+                    showDialog(getActivity());
+                    return;
+                }
+
                 MyQRCode myQRCode = myQRCodes.get(position);
                 Intent intent = new Intent(getActivity(), CodeDetails.class);
                 intent.putExtra("name", myQRCode.getName());
@@ -117,6 +175,19 @@ public class HistoryFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private HashMap<String, String> makeDataSet(MyQRCode myQRCode){
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put(KEY_NAME, myQRCode.getName());
+        map.put(KEY_CODE_TYPE, myQRCode.getCodeType());
+        map.put(KEY_COMMENTS, myQRCode.getComments());
+
+        Date dateOfScanning = myQRCode.getDateOfScanning();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm", getContext().getResources().getConfiguration().locale);
+        String date = dateFormat.format(dateOfScanning);
+        map.put(KEY_DATE, date);
+        return map;
     }
 
     @Override
@@ -134,16 +205,38 @@ public class HistoryFragment extends Fragment {
 
         if (myQRCodes != null) {
             for (MyQRCode mc : myQRCodes) {
-                codesHistory.add(mc.getName());
+                codesHistory.add(makeDataSet(mc));
             }
         }
-        else codesHistory.add(getResources().getString(R.string.history_is_empty));
+        else {
+            HashMap<String, String> hm = new HashMap<>();
+            hm.put(KEY_NAME, getResources().getString(R.string.history_is_empty));
+            hm.put(KEY_CODE_TYPE, "");
+            hm.put(KEY_COMMENTS, "");
+            hm.put(KEY_DATE, "");
 
-        mHistoryAdapter.clear();
-        mHistoryAdapter.addAll(codesHistory);
-        mHistoryAdapter.notifyDataSetChanged();
+            codesHistory.add(hm);
+        }
+
+        bindingData.clear();
+//        bindingData = new HistoryDataBinder(getActivity(), codesHistory);
+        bindingData.addAll(codesHistory);
+
+        bindingData.notifyDataSetChanged();
         listView.invalidateViews();
         listView.refreshDrawableState();
+    }
+
+    private void showDialog(final Activity act) {
+        final AlertDialog.Builder downloadDialog = new AlertDialog.Builder(act);
+        downloadDialog.setTitle(R.string.splash_screen_alert_dialog);
+        downloadDialog.setMessage(R.string.history_is_empty);
+        downloadDialog.setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        downloadDialog.show();
     }
 
     public interface OnHistoryChangedListener {

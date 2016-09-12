@@ -23,6 +23,7 @@ import com.ioLab.qrCodeScanner.Utils.MyQRCode;
 import com.ioLab.qrCodeScanner.Utils.ZXingUtils;
 
 import java.util.Calendar;
+import java.util.List;
 
 import app.num.barcodescannerproject.R;
 
@@ -80,6 +81,7 @@ public class ScanFragment extends Fragment {
                 startActivityForResult(scanInt, 1);
             }
         });
+        setPageImage();
         return view;
     }
 
@@ -130,6 +132,39 @@ public class ScanFragment extends Fragment {
         }
     }
 
+    private void setPageImage(){
+        String name;
+        BarcodeFormat barcodeType;
+        History history = new History(getContext());
+        List<MyQRCode> arrayList = history.getAllCodesFromDB();
+
+        if(arrayList != null) {
+            MyQRCode myQRCode = arrayList.get(arrayList.size() - 1);
+            name = myQRCode.getName();
+            //Todo need help to optimize casting without selecting by method
+            barcodeType = getCodeType(myQRCode.getCodeType());
+        }
+        else{
+            name = getResources().getString(R.string.history_is_empty);
+            barcodeType = BarcodeFormat.QR_CODE;
+        }
+
+        codeText.setText(name);
+
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        float barcodeSize = width > height ? width : height;
+        int barcodeSizeInt = Math.round(barcodeSize);
+        try {
+            Bitmap bitmap = ZXingUtils.encodeAsBitmap(name, barcodeType, barcodeSizeInt, barcodeSizeInt);
+            image.setImageBitmap(bitmap);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+    }
 
     //ToDo insert in onActivityCreated code to restore barcode picture and text after rotation
     @Override
@@ -138,5 +173,60 @@ public class ScanFragment extends Fragment {
 //        outState.putInt(POSITION, tabLayout.getSelectedTabPosition());
     }
 
-
+    private BarcodeFormat getCodeType(String format){
+        if (format.equals(BarcodeFormat.AZTEC.toString())){
+            return BarcodeFormat.AZTEC;
+        }
+        else if (format.equals(BarcodeFormat.CODABAR.toString())){
+            return BarcodeFormat.CODABAR;
+        }
+        else if (format.equals(BarcodeFormat.CODE_39.toString())){
+            return BarcodeFormat.CODE_39;
+        }
+        else if (format.equals(BarcodeFormat.CODE_93.toString())){
+            return BarcodeFormat.CODE_93;
+        }
+        else if (format.equals(BarcodeFormat.CODE_128.toString())){
+            return BarcodeFormat.CODE_128;
+        }
+        else if (format.equals(BarcodeFormat.DATA_MATRIX.toString())){
+            return BarcodeFormat.DATA_MATRIX;
+        }
+        else if (format.equals(BarcodeFormat.EAN_8.toString())){
+            return BarcodeFormat.EAN_8;
+        }
+        else if (format.equals(BarcodeFormat.EAN_13.toString())){
+            return BarcodeFormat.EAN_13;
+        }
+        else if (format.equals(BarcodeFormat.ITF.toString())){
+            return BarcodeFormat.ITF;
+        }
+        else if (format.equals(BarcodeFormat.MAXICODE.toString())){
+            return BarcodeFormat.MAXICODE;
+        }
+        else if (format.equals(BarcodeFormat.PDF_417.toString())){
+            return BarcodeFormat.PDF_417;
+        }
+        else if (format.equals(BarcodeFormat.QR_CODE.toString())){
+            return BarcodeFormat.QR_CODE;
+        }
+        else if (format.equals(BarcodeFormat.RSS_14.toString())){
+            return BarcodeFormat.RSS_14;
+        }
+        else if (format.equals(BarcodeFormat.RSS_EXPANDED.toString())){
+            return BarcodeFormat.RSS_EXPANDED;
+        }
+        else if (format.equals(BarcodeFormat.UPC_A.toString())){
+            return BarcodeFormat.UPC_A;
+        }
+        else if (format.equals(BarcodeFormat.UPC_E.toString())){
+            return BarcodeFormat.UPC_E;
+        }
+        else if(format.equals(BarcodeFormat.UPC_EAN_EXTENSION.toString())) {
+            return BarcodeFormat.UPC_EAN_EXTENSION;
+        }
+        else{
+            return null;
+        }
+    }
  }
