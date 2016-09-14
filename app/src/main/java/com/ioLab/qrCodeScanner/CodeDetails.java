@@ -1,8 +1,9 @@
 package com.ioLab.qrCodeScanner;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.ioLab.qrCodeScanner.Utils.MyQRCode;
 
@@ -13,15 +14,20 @@ import app.num.barcodescannerproject.R;
 /**
  * Created by disknar on 08.09.2016.
  */
-public class CodeDetails extends Activity {
+public class CodeDetails extends AppCompatActivity {
 
     private MyQRCode myQRCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.details_layout);
-        setContentView(R.layout.splash);
+        setContentView(R.layout.activity_code_details);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.details_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         Intent intent = getIntent();
         myQRCode = new MyQRCode(

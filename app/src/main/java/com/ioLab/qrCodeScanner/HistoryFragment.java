@@ -100,18 +100,6 @@ public class HistoryFragment extends Fragment {
 
                 MyQRCode codeItem = myQRCodes.get(i);
                 map = makeDataSet(codeItem);
-
-//Todo delete this after check
-//                map = new HashMap<String, String>();
-//                map.put(KEY_NAME, codeItem.getName());
-//                map.put(KEY_CODE_TYPE, codeItem.getCodeType());
-//                map.put(KEY_COMMENTS, codeItem.getComments());
-//
-//                Date dateOfScanning = codeItem.getDateOfScanning();
-//                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm", getContext().getResources().getConfiguration().locale);
-//                String date = dateFormat.format(dateOfScanning);
-//                map.put(KEY_DATE, date);
-
                 codeDataCollection.add(map);
             }
         }
@@ -129,23 +117,6 @@ public class HistoryFragment extends Fragment {
 
         Log.i("BEFORE", "<<------------- Before SetAdapter-------------->>");
 
-        //old adapter code
-//        codesHistory = new ArrayList<>();
-//
-//        if (myQRCodes != null) {
-//            for (MyQRCode mc : myQRCodes) {
-//                codesHistory.add(mc.getName());
-//            }
-//        }
-//        else {
-//            codesHistory.add(getResources().getString(R.string.history_is_empty));
-//        }
-//
-//        mHistoryAdapter = new ArrayAdapter<String>(
-//                getActivity(), // The current context (this activity)
-//                R.layout.fr_history_page_list_item, // The name of the layout ID.
-//                R.id.list_item_history_textview, // The ID of the textview to populate.
-//                codesHistory);
         View rootView = inflater.inflate(R.layout.fr_history_page, container, false);
         // Get a reference to the ListView, and attach this adapter to it.
         listView = (ListView) rootView.findViewById(R.id.listview_history);
@@ -164,17 +135,21 @@ public class HistoryFragment extends Fragment {
                 }
 
                 MyQRCode myQRCode = myQRCodes.get(position);
+
                 Intent intent = new Intent(getActivity(), CodeDetails.class);
                 intent.putExtra("name", myQRCode.getName());
                 intent.putExtra("format", myQRCode.getCodeType());
                 intent.putExtra("comments", myQRCode.getComments());
-                intent.putExtra("date", myQRCode.getDateOfScanning().getTime()/1000);
+                Date dateOfScanning = myQRCode.getDateOfScanning();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm", getContext().getResources().getConfiguration().locale);
+                String date = dateFormat.format(dateOfScanning);
+                intent.putExtra("date", date);
 
                 startActivity(intent);
             }
         });
 
-        return rootView;
+         return rootView;
     }
 
     private HashMap<String, String> makeDataSet(MyQRCode myQRCode){
@@ -219,7 +194,6 @@ public class HistoryFragment extends Fragment {
         }
 
         bindingData.clear();
-//        bindingData = new HistoryDataBinder(getActivity(), codesHistory);
         bindingData.addAll(codesHistory);
 
         bindingData.notifyDataSetChanged();

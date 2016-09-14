@@ -54,7 +54,7 @@ public class HistoryDataBinder<T> extends BaseAdapter{
         View view = convertView;
         if(convertView == null){
 
-            view = inflater.inflate(R.layout.fr_history_page_list_item_colored, null);
+            view = inflater.inflate(R.layout.fr_history_page_list_item_cards_colored, null);
             holder = new ViewHolder();
 
             holder.tvCodeName = (TextView)view.findViewById(R.id.tvCodeName); // city name

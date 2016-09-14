@@ -1,6 +1,8 @@
 package com.ioLab.qrCodeScanner;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -22,7 +24,9 @@ import com.ioLab.qrCodeScanner.Utils.History;
 import com.ioLab.qrCodeScanner.Utils.MyQRCode;
 import com.ioLab.qrCodeScanner.Utils.ZXingUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import app.num.barcodescannerproject.R;
@@ -39,6 +43,7 @@ public class ScanFragment extends Fragment {
     private TextView codeText;
     private CompoundButton autoFocus;
     private CompoundButton useFlash;
+    private MyQRCode myQRCode;
 
     private static final int WHITE = 0xFFFFFFFF;
     private static final int BLACK = 0xFF000000;
@@ -82,6 +87,28 @@ public class ScanFragment extends Fragment {
             }
         });
         setPageImage();
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(myQRCode == null){
+                    showDialog(getActivity());
+                    return;
+                }
+
+                Intent intent = new Intent(getActivity(), CodeDetails.class);
+                intent.putExtra("name", myQRCode.getName());
+                intent.putExtra("format", myQRCode.getCodeType());
+                intent.putExtra("comments", myQRCode.getComments());
+                Date dateOfScanning = myQRCode.getDateOfScanning();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm", getContext().getResources().getConfiguration().locale);
+                String date = dateFormat.format(dateOfScanning);
+                intent.putExtra("date", date);
+
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -139,12 +166,13 @@ public class ScanFragment extends Fragment {
         List<MyQRCode> arrayList = history.getAllCodesFromDB();
 
         if(arrayList != null) {
-            MyQRCode myQRCode = arrayList.get(arrayList.size() - 1);
+            myQRCode = arrayList.get(arrayList.size() - 1);
             name = myQRCode.getName();
             //Todo need help to optimize casting without selecting by method
             barcodeType = getCodeType(myQRCode.getCodeType());
         }
         else{
+            myQRCode = null;
             name = getResources().getString(R.string.history_is_empty);
             barcodeType = BarcodeFormat.QR_CODE;
         }
@@ -228,5 +256,17 @@ public class ScanFragment extends Fragment {
         else{
             return null;
         }
+    }
+
+    private void showDialog(final Activity act) {
+        final AlertDialog.Builder downloadDialog = new AlertDialog.Builder(act);
+        downloadDialog.setTitle(R.string.splash_screen_alert_dialog);
+        downloadDialog.setMessage(R.string.history_is_empty);
+        downloadDialog.setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        downloadDialog.show();
     }
  }
