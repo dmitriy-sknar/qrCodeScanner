@@ -2,6 +2,7 @@ package com.ioLab.qrCodeScanner.Utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +26,8 @@ public class HistoryDataBinder<T> extends BaseAdapter{
     private static final String KEY_CODE_TYPE = "format";
     private static final String KEY_COMMENTS = "comments";
     private static final String KEY_DATE = "date";
-    private static final String KEY_ICON = "icon";
 
     LayoutInflater inflater;
-    ImageView thumb_image;
     private List<HashMap<String, String>> codeDataCollection;
     ViewHolder holder;
 
@@ -97,11 +96,33 @@ public class HistoryDataBinder<T> extends BaseAdapter{
         holder.tvCodeFormat.setText((String) hm.get(KEY_CODE_TYPE));
         holder.tvScanningDate.setText((String) hm.get(KEY_DATE));
 
-        //Todo Setting an image
-//        String uri = "mipmap/"+ hm.get(KEY_ICON);
-//        int imageResource = vi.getContext().getApplicationContext().getResources().getIdentifier(uri, null, vi.getContext().getApplicationContext().getPackageName());
-//        Drawable image = vi.getContext().getResources().getDrawable(imageResource);
-//        holder.list_image.setImageDrawable(image);
+        String icon_name = hm.get(KEY_CODE_TYPE).toString();
+        switch (icon_name){
+            case "QR_CODE":
+                icon_name = "qrcode";
+                break;
+            case "DATA_MATRIX":
+                icon_name = "data_matrix";
+                break;
+            case "UPC_A":
+                icon_name = "upc_a";
+                break;
+            case "PDF_417":
+                icon_name = "pdf_417";
+                break;
+            default:
+                icon_name = "barcode";
+                break;
+        }
+
+        String uri = "mipmap/"+ icon_name;
+        int imageResource = convertView.getContext().getResources().getIdentifier(
+                uri,
+                null,
+                convertView.getContext().getPackageName());
+
+        Drawable image = convertView.getContext().getResources().getDrawable(imageResource);
+        holder.list_image.setImageDrawable(image);
 
         return convertView;
     }
