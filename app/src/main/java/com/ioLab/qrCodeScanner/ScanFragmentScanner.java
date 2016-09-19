@@ -10,7 +10,6 @@ import android.util.Log;
 
 import com.google.zxing.Result;
 
-import app.num.barcodescannerproject.R;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 /**

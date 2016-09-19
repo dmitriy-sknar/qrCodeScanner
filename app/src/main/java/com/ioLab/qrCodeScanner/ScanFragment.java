@@ -29,8 +29,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import app.num.barcodescannerproject.R;
-
 /**
  * Created by disknar on 01.08.2016.
  */

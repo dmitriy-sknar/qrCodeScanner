@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import app.num.barcodescannerproject.R;
-
 /**
  * Created by disknar on 01.08.2016.
  */

@@ -10,8 +10,6 @@ import android.support.v4.app.FragmentActivity;
 
 import java.util.concurrent.TimeUnit;
 
-import app.num.barcodescannerproject.R;
-
 public class SplashScreen extends FragmentActivity {
 
     @Override

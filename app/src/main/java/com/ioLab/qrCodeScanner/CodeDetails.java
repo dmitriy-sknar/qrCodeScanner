@@ -9,7 +9,6 @@ import com.ioLab.qrCodeScanner.Utils.MyQRCode;
 
 import java.util.Date;
 
-import app.num.barcodescannerproject.R;
 
 /**
  * Created by disknar on 08.09.2016.

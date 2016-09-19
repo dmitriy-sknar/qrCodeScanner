@@ -8,9 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import app.num.barcodescannerproject.R;
-
 /**
  * Created by disknar on 10.08.2016.
  */

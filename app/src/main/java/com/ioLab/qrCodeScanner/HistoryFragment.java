@@ -27,7 +27,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import app.num.barcodescannerproject.R;
 
 /**
  * Created by disknar on 01.08.2016.
@@ -141,15 +140,15 @@ public class HistoryFragment extends Fragment {
                 intent.putExtra("format", myQRCode.getCodeType());
                 intent.putExtra("comments", myQRCode.getComments());
                 Date dateOfScanning = myQRCode.getDateOfScanning();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm", getContext().getResources().getConfiguration().locale);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm",
+                        getContext().getResources().getConfiguration().locale);
                 String date = dateFormat.format(dateOfScanning);
                 intent.putExtra("date", date);
 
                 startActivity(intent);
             }
         });
-
-         return rootView;
+        return rootView;
     }
 
     private HashMap<String, String> makeDataSet(MyQRCode myQRCode){
@@ -159,7 +158,8 @@ public class HistoryFragment extends Fragment {
         map.put(KEY_COMMENTS, myQRCode.getComments());
 
         Date dateOfScanning = myQRCode.getDateOfScanning();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm", getContext().getResources().getConfiguration().locale);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm",
+                getContext().getResources().getConfiguration().locale);
         String date = dateFormat.format(dateOfScanning);
         map.put(KEY_DATE, date);
         return map;
@@ -203,7 +203,7 @@ public class HistoryFragment extends Fragment {
 
     private void showDialog(final Activity act) {
         final AlertDialog.Builder downloadDialog = new AlertDialog.Builder(act);
-        downloadDialog.setTitle(R.string.splash_screen_alert_dialog);
+//        downloadDialog.setTitle(R.string.splash_screen_alert_dialog);
         downloadDialog.setMessage(R.string.history_is_empty);
         downloadDialog.setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {

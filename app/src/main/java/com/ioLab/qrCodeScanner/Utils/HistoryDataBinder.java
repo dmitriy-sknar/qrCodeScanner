@@ -9,10 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ioLab.qrCodeScanner.R;
+
 import java.util.HashMap;
 import java.util.List;
 
-import app.num.barcodescannerproject.R;
 
 /**
  * Created by disknar on 11.09.2016.
@@ -29,7 +30,6 @@ public class HistoryDataBinder<T> extends BaseAdapter{
     LayoutInflater inflater;
     ImageView thumb_image;
     private List<HashMap<String, String>> codeDataCollection;
-//    List<HashMap<String,String>> codeDataCollection;
     ViewHolder holder;
 
     public HistoryDataBinder(Activity act, List<HashMap<String, String>> list) {
@@ -50,22 +50,41 @@ public class HistoryDataBinder<T> extends BaseAdapter{
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-
-        View view = convertView;
+//        final CardView mCardView;
         if(convertView == null){
 
-            view = inflater.inflate(R.layout.fr_history_page_list_item_cards_colored, null);
+            convertView = inflater.inflate(R.layout.fr_history_page_list_item_cards_colored, null);
             holder = new ViewHolder();
 
-            holder.tvCodeName = (TextView)view.findViewById(R.id.tvCodeName); // city name
-            holder.tvCodeFormat = (TextView)view.findViewById(R.id.tvCodeFormat); // city weather overview
-            holder.tvScanningDate =  (TextView)view.findViewById(R.id.tvScanningDate); // city temperature
-            holder.list_image =(ImageView)view.findViewById(R.id.list_image); // thumb image
+            holder.tvCodeName = (TextView)convertView.findViewById(R.id.tvCodeName); // city name
+            holder.tvCodeFormat = (TextView)convertView.findViewById(R.id.tvCodeFormat); // city weather overview
+            holder.tvScanningDate = (TextView)convertView.findViewById(R.id.tvScanningDate); // city temperature
+            holder.list_image = (ImageView)convertView.findViewById(R.id.list_image); // thumb image
 
-            view.setTag(holder);
+//            mCardView = (CardView) convertView.findViewById(R.id.card_view);
+//            mCardView.setOnTouchListener(new CardView.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//
+//                    int action = event.getActionMasked();
+//                    if (action == MotionEvent.ACTION_DOWN){
+//                        mCardView.setCardBackgroundColor(Color.RED);
+//                        return false;
+//                    }
+//                    else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
+//                        mCardView.setCardBackgroundColor(Color.WHITE);
+//                        return false;
+//                    }
+//                    else{
+//                        return true;
+//                    }
+//                }
+//            });
+
+            convertView.setTag(holder);
         }
         else{
-            holder = (ViewHolder) view.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
 
         // Setting all values in listview
@@ -84,7 +103,7 @@ public class HistoryDataBinder<T> extends BaseAdapter{
 //        Drawable image = vi.getContext().getResources().getDrawable(imageResource);
 //        holder.list_image.setImageDrawable(image);
 
-        return view;
+        return convertView;
     }
 
     public void clear() {

@@ -4,9 +4,6 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-
-import app.num.barcodescannerproject.R;
-
 /**
  * Created by disknar on 01.08.2016.
  */
