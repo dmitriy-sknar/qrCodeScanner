@@ -1,25 +1,32 @@
-package com.ioLab.qrCodeScanner.Utils;
+package com.ioLab.qrCodeScanner.utils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ioLab.qrCodeScanner.CodeDetails;
 import com.ioLab.qrCodeScanner.R;
 
 import java.util.HashMap;
 import java.util.List;
 
-
-/**
- * Created by disknar on 11.09.2016.
- */
-public class HistoryDataBinder<T> extends BaseAdapter{
+public class HistoryDataBinder extends BaseAdapter {
 
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
@@ -30,10 +37,16 @@ public class HistoryDataBinder<T> extends BaseAdapter{
     LayoutInflater inflater;
     private List<HashMap<String, String>> codeDataCollection;
     ViewHolder holder;
+    private Activity mActivity;
+    private ActionMode mActionMode;
+    private View view;
+    private ShareActionProvider mShareActionProvider;
+    private HashMap hm;
 
     public HistoryDataBinder(Activity act, List<HashMap<String, String>> list) {
         this.codeDataCollection = list;
         inflater = (LayoutInflater) act.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mActivity = act;
     }
 
     public int getCount() {
@@ -48,18 +61,18 @@ public class HistoryDataBinder<T> extends BaseAdapter{
         return 0;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 //        final CardView mCardView;
         if(convertView == null){
 
             convertView = inflater.inflate(R.layout.fr_history_page_list_item_cards_colored, null);
             holder = new ViewHolder();
 
-            holder.tvCodeName = (TextView)convertView.findViewById(R.id.tvCodeName); // city name
-            holder.tvCodeFormat = (TextView)convertView.findViewById(R.id.tvCodeFormat); // city weather overview
-            holder.tvScanningDate = (TextView)convertView.findViewById(R.id.tvScanningDate); // city temperature
-            holder.list_image = (ImageView)convertView.findViewById(R.id.list_image); // thumb image
-
+            holder.tvCodeName = (TextView)convertView.findViewById(R.id.tvCodeName);
+            holder.tvCodeFormat = (TextView)convertView.findViewById(R.id.tvCodeFormat);
+            holder.tvScanningDate = (TextView)convertView.findViewById(R.id.tvScanningDate);
+            holder.list_image = (ImageView)convertView.findViewById(R.id.list_image);
+            holder.vhView = convertView;
 //            mCardView = (CardView) convertView.findViewById(R.id.card_view);
 //            mCardView.setOnTouchListener(new CardView.OnTouchListener() {
 //                @Override
@@ -81,13 +94,16 @@ public class HistoryDataBinder<T> extends BaseAdapter{
 //            });
 
             convertView.setTag(holder);
+            view = convertView;
         }
         else{
             holder = (ViewHolder) convertView.getTag();
+            holder.vhView = convertView;
+            view = convertView;
         }
 
         // Setting all values in listview
-        HashMap hm = (HashMap) codeDataCollection.get(position);
+        hm = (HashMap) codeDataCollection.get(position);
 
         String codeName = (String) hm.get(KEY_NAME);
         if(codeName.length() > 30)
@@ -124,6 +140,41 @@ public class HistoryDataBinder<T> extends BaseAdapter{
         Drawable image = convertView.getContext().getResources().getDrawable(imageResource);
         holder.list_image.setImageDrawable(image);
 
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String id = (String) hm.get(KEY_ID);
+                if(id.equals("9999999")){
+                    showDialog(mActivity);
+                    return;
+                }
+
+                Intent intent = new Intent(mActivity, CodeDetails.class);
+                intent.putExtra("name", (String) hm.get(KEY_NAME));
+                intent.putExtra("format", (String) hm.get(KEY_CODE_TYPE));
+                intent.putExtra("comments", "");
+                intent.putExtra("date", (String) hm.get(KEY_DATE));
+
+                mActivity.startActivity(intent);
+            }
+        });
+
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mActionMode != null) {
+                    return false;
+                }
+                // Start the CAB using the ActionMode.Callback defined above
+                mActionMode = mActivity.startActionMode(mActionModeCallback);
+                mActionMode.setTitle(R.string.select_action); //make text "You selected an item"
+                holder.vhView.setSelected(true);
+
+                Snackbar.make(v, "Long click", Snackbar.LENGTH_LONG).show();
+                return true;
+            }
+        });
+
         return convertView;
     }
 
@@ -136,17 +187,93 @@ public class HistoryDataBinder<T> extends BaseAdapter{
     public void addAll(List<HashMap<String, String>> list) {
         if (codeDataCollection != null) {
             codeDataCollection = list;
-//            for(HashMap<String, String> ls : list){
-//                codeDataCollection.add(ls);
-//            }
         }
     }
 
-    static class ViewHolder{
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            // Inflate a menu resource providing context menu items
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.hist_fr_action_mode_menu, menu);
+
+            MenuItem item = menu.findItem(R.id.am_menu_share);
+            // Fetch and store ShareActionProvider
+            mShareActionProvider =
+                    (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+
+            return true;
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false; // Return false if nothing is done
+        }
+
+//        private void setShareIntent(Intent shareIntent) {
+//            if (mShareActionProvider != null) {
+//                mShareActionProvider.setShareIntent(shareIntent);
+//            }
+//        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.am_menu_delete:
+                    view.setSelected(false);
+
+                    mode.finish(); // Action picked, so close the CAB
+                    return true;
+                case R.id.am_menu_share:
+                    String id = (String) hm.get(KEY_ID);
+                    if(id.equals("9999999")){
+                        showDialog(mActivity);
+                        return false;
+                    }
+
+                    Utils.shareCode(mActivity,
+                            (String) hm.get(KEY_NAME),
+                            (String) hm.get(KEY_CODE_TYPE),
+                            (String) hm.get(KEY_DATE));
+
+                    holder.vhView.setSelected(false);
+                    mode.finish(); // Action picked, so close the CAB
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        // Called when the user exits the action mode
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+            holder.vhView.setSelected(false);
+        }
+    };
+
+    static class ViewHolder{
         TextView tvCodeName;
         TextView tvCodeFormat;
         TextView tvScanningDate;
         ImageView list_image;
+        View vhView;
+    }
+
+    private void showDialog(final Activity act) {
+        final AlertDialog.Builder downloadDialog = new AlertDialog.Builder(act);
+//        downloadDialog.setTitle(R.string.splash_screen_alert_dialog);
+        downloadDialog.setMessage(R.string.history_is_empty);
+        downloadDialog.setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        downloadDialog.show();
     }
 }

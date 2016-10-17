@@ -1,4 +1,4 @@
-package com.ioLab.qrCodeScanner;
+package com.ioLab.qrCodeScanner.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,9 +9,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-/**
- * Created by disknar on 01.08.2016.
- */
+import com.ioLab.qrCodeScanner.R;
+
 public class GeneratorFragment extends Fragment {
 
     private static final String ARG_PAGE = "ARG_PAGE";

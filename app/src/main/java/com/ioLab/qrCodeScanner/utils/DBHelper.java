@@ -1,13 +1,10 @@
-package com.ioLab.qrCodeScanner.Utils;
+package com.ioLab.qrCodeScanner.utils;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-/**
- * Created by disknar on 12.08.2016.
- */
 public class DBHelper extends SQLiteOpenHelper {
     private final String LOG_TAG = "ioLab";
 
@@ -23,6 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "name text,"
                 + "format text,"
                 + "comments text,"
+                + "path text,"
                 + "date integer" + ");");
     }
 

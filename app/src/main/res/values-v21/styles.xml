@@ -8,4 +8,18 @@
         <item name="cardPreventCornerOverlap">false</item>
         <item name="cardUseCompatPadding">true</item>
     </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+
+        <!--this for actionMode contextMenu is required not to push Toolbar down-->
+        <item name="windowActionModeOverlay">true</item>
+    </style>
 </resources>

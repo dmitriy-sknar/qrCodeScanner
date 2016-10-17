@@ -1,8 +1,12 @@
-package com.ioLab.qrCodeScanner.Utils;
+package com.ioLab.qrCodeScanner.utils;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
+
+import com.ioLab.qrCodeScanner.R;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,22 +14,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-/**
- * Created by disknar on 17.08.2016.
- */
-public class FileUtils extends Activity{
+public class Utils extends Activity{
 
-    private final String LOG_TAG = "ioLogs";
-    private final String FILENAME = "generated_barcode";
-    private final String DIR_SD = "BarCodes";
-    private final String FILENAME_SD = "generated_barcode_SD";
+    private static final String LOG_TAG = "ioLogs";
+    private static final String FILENAME = "barcode";
+    private static final String DIR_SD = "BarCodes";
+    private static final String FILENAME_SD = "barcode_SD";
 
     public static File getSDPath() {
         String sdState = android.os.Environment.getExternalStorageState(); //Получаем состояние SD карты (подключена она или нет) - возвращается true и false соответственно
@@ -150,35 +150,41 @@ public class FileUtils extends Activity{
         }
     }
 
-    public void writeFileSD() {
-        // проверяем доступность SD
+    public static String writeFileSD(Bitmap bitmap, String format, String id) {
+        // check the state of SD card
         if (!Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED)) {
-            Log.d(LOG_TAG, "SD-карта не доступна: " + Environment.getExternalStorageState());
-            return;
+            Log.d(LOG_TAG, "SD-card is not ready: " + Environment.getExternalStorageState());
+            return "error";
         }
-        // получаем путь к SD
+        // get path to SD
         File sdPath = Environment.getExternalStorageDirectory();
-        // добавляем свой каталог к пути
+        // add my dir to the path
         sdPath = new File(sdPath.getAbsolutePath() + "/" + DIR_SD);
-        // создаем каталог
-        sdPath.mkdirs();
-        // формируем объект File, который содержит путь к файлу
-        File sdFile = new File(sdPath, FILENAME_SD);
+        // make dir
+        if(!sdPath.exists()) {
+            sdPath.mkdirs();
+        }
+        // make File object, that contains path to file
+        File file = new File(sdPath, id + "." + format);
         try {
-            // открываем поток для записи
-            BufferedWriter bw = new BufferedWriter(new FileWriter(sdFile));
-            // пишем данные
-            bw.write("Содержимое файла на SD");
-            // закрываем поток
-            bw.close();
-            Log.d(LOG_TAG, "Файл записан на SD: " + sdFile.getAbsolutePath());
+            FileOutputStream fOut = new FileOutputStream(file);
+            if (format.equals("jpeg")) {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            }
+            else if(format.equals("png")){
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
+            }
+            fOut.flush();
+            fOut.close();
+            Log.d(LOG_TAG, "File was written to SD: " + file.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return file.getAbsolutePath();
     }
 
-    public void readFileSD() {
+    public static void readFileSD() {
         // проверяем доступность SD
         if (!Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED)) {
@@ -202,5 +208,23 @@ public class FileUtils extends Activity{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void shareCode(Activity mActivity, String name, String type, String date){
+        String shareText =
+                mActivity.getApplicationContext().getResources().getString(R.string.share_text_start) + "\n"
+                        + mActivity.getApplicationContext().getResources().getString(R.string.share_text_codename)
+                        + name + "\n"
+                        + mActivity.getApplicationContext().getResources().getString(R.string.share_text_codetype)
+                        + type + "\n"
+                        + mActivity.getApplicationContext().getResources().getString(R.string.share_text_scandate)
+                        + date + "\n" + "\n"
+                        + mActivity.getApplicationContext().getResources().getString(R.string.share_text_end);
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/*");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+//                    setShareIntent(shareIntent);
+        mActivity.startActivity(shareIntent);
     }
 }

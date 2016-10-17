@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -85,16 +86,30 @@
             android:text="@string/barcode_text_result_empty"
             />
     </LinearLayout>
-    <ImageView
-        android:id="@+id/scannedImage"
-        android:layout_above="@id/code_text_result"
-        android:contentDescription="regenerated code image"
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/code_text_result"
         android:layout_marginTop="35dp"
-        />
+        app:cardCornerRadius="2dp"
+        app:cardElevation="2dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="@color/colorBackground"
+        >
+        <ImageView
+            android:id="@+id/scannedImage"
+            android:contentDescription="regenerated code image"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="8dp"
+            />
+        <!--android:layout_above="@id/code_text_result"-->
+        <!--android:layout_marginTop="35dp"      -->
+    </android.support.v7.widget.CardView>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

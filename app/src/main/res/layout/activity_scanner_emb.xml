@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:id="@+id/zxing_barcode_scanner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:zxing_scanner_layout="@layout/emb_barcode_scanner">
+    </com.journeyapps.barcodescanner.DecoratedBarcodeView>
+
+    <TextView
+        android:id="@+id/zxing_status_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/zxing_transparent"
+        android:text="@string/zxing_msg_default_status"
+        android:textColor="@color/zxing_status_text"
+        android:textAlignment="center" />
+
+    <ImageView
+        android:id="@+id/btn_switch_flashlight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:src="@mipmap/ic_flash_off"
+        android:onClick="switchFlashlight"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

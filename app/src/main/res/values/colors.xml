@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ea0202</color>
-    <color name="colorPrimaryDark">#c12629</color>
-    <color name="colorAccent">#fc2763</color>
-    <color name="black_overlay">#66000000</color>
-    <!--<color name="colorBackground">#be585a</color>-->
-    <!--<color name="actionbar_opacity">#33000000</color>-->
-    <!--<color name="colorPrimary">#3F51B5</color>-->
-    <!--<color name="colorPrimaryDark">#303F9F</color>-->
-    <!--<color name="colorAccent">#FF4081</color>-->
-    <!--<color name="actionbar_opacity">#33000000</color>-->
 
+    <color name="colorPrimary">#f44336</color>
+    <color name="colorPrimaryDark">#c62828</color>
+    <color name="colorAccent">#e91e63</color>
+    <color name="black_overlay">#66000000</color>
     <color name="colorControlHighlight">#80ff0004</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBackground">#ffebee</color>
+
+    <color name="transparent">#00000000</color>
+
+    <color name="tab_active">@color/colorPrimary</color>
+    <color name="tab_inactive">@color/colorPrimaryDark</color>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.ioLab.qrCodeScanner.Utils;
+package com.ioLab.qrCodeScanner.utils;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -6,17 +6,24 @@ import android.support.annotation.Nullable;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by disknar on 12.08.2016.
- */
 public class MyQRCode {
 
+    private String id;
     private String name;
     private Date dateOfScanning;
-//    private String codeType;
     private String codeType;
     @Nullable
     private String comments;
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    private String path;
 
     private Locale currentLocale;
 
@@ -30,12 +37,24 @@ public class MyQRCode {
         this.comments = comments;
     }
 
-    public MyQRCode(Context context, String name, Date dateOfScanning, String codeType, String comments) {
+
+    public MyQRCode(Context context, String name, Date dateOfScanning, String codeType,
+                    String comments, String id, String path) {
         this.currentLocale = context.getResources().getConfiguration().locale;
         this.name = name;
         this.dateOfScanning = dateOfScanning;
         this.codeType = codeType;
         this.comments = comments;
+        this.id = id;
+        this.path = path;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Nullable

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">QR Code Scanner</string>
-    <string name="app_name_full">QR Code Scanner by ioLab</string>
     <string name="btnStartScanning">START SCANNING</string>
+    <string name="app_name_company">ioLab</string>
 
     <string name="title_activity_scanner">Scanner</string>
     <string name="dummy_button">Dummy Button</string>
@@ -31,4 +31,20 @@
     <string name="dummyStrCode">123456</string>
     <string name="dummyStrCodeFormat">EAN-13</string>
     <string name="dummyStrCodeDate">01.01.2000</string>
+    <string name="history_delete_item">Delete</string>
+    <string name="history_share">Share</string>
+    <string name="share_text_start">This data was retrieved from scanned barcode: </string>
+    <string name="share_text_codename">Code data: </string>
+    <string name="share_text_codetype">Code type: </string>
+    <string name="share_text_scandate">Scan date: </string>
+    <string name="share_text_end">The barcode was scanned by ioLab QrCodeScanner application.
+        Get it on http://play.google.com and be armed to scan barcodes by yourself.</string>
+    <string name="select_action">Action: </string>
+    <string name="code_type">Type:</string>
+
+
+    <string name="turn_on_flashlight">Turn on Flashlight</string>
+    <string name="turn_off_flashlight">Turn off Flashlight</string>
+    <string name="promt_to_scan">Place barcode into viewfinder to scan it.</string>
+
 </resources>

@@ -12,10 +12,7 @@ import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-/**
- * Created by disknar on 01.08.2016.
- */
-public class ScanFragmentScanner extends FragmentActivity implements ZXingScannerView.ResultHandler{
+public class ScannerActivity extends FragmentActivity implements ZXingScannerView.ResultHandler{
 
     public static final String AutoFocus = "AutoFocus";
     public static final String UseFlash = "UseFlash";
@@ -61,7 +58,11 @@ public class ScanFragmentScanner extends FragmentActivity implements ZXingScanne
         Log.e("handler", rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode)
 
         StringBuilder sb = new StringBuilder();
-        sb.append(rawResult.getText()).append("\n").append("Type: ").append(rawResult.getBarcodeFormat().toString());
+        sb.append(rawResult.getText()).append("\n")
+                .append(getResources().getString(R.string.code_type))
+                .append(" ")
+                .append(rawResult.getBarcodeFormat()
+                        .toString());
 
         String dialogTitle = getResources().getString(R.string.scan_dialog_title);
         String dialogBtnSaveResult = getResources().getString(R.string.scan_dialog_btn_save_result);
@@ -73,10 +74,10 @@ public class ScanFragmentScanner extends FragmentActivity implements ZXingScanne
     }
 
     private void showDialog(final Activity act, CharSequence title, CharSequence message, CharSequence buttonYes, CharSequence buttonNo, CharSequence buttonRescan ) {
-        AlertDialog.Builder downloadDialog = new AlertDialog.Builder(act);
-        downloadDialog.setTitle(title);
-        downloadDialog.setMessage(message);
-        downloadDialog.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
+        AlertDialog.Builder scanDialog = new AlertDialog.Builder(act);
+        scanDialog.setTitle(title);
+        scanDialog.setMessage(message);
+        scanDialog.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
                 Intent resultInt = new Intent();
                 resultInt.putExtra("ScanResultText", result.getText());
@@ -88,17 +89,17 @@ public class ScanFragmentScanner extends FragmentActivity implements ZXingScanne
                 finish();
             }
         });
-        downloadDialog.setNegativeButton(buttonNo, new DialogInterface.OnClickListener() {
+        scanDialog.setNegativeButton(buttonNo, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
                 finish();
             }
         });
-        downloadDialog.setNeutralButton(buttonRescan, new DialogInterface.OnClickListener() {
+        scanDialog.setNeutralButton(buttonRescan, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
                 resumeScanning();
             }
         });
-        downloadDialog.show();
+        scanDialog.show();
     }
 
     public void resumeScanning(){

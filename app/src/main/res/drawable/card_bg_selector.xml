@@ -8,7 +8,10 @@
         android:drawable="@drawable/card_highlighted" /> <!-- pressed -->
     <item android:state_focused="true"
         android:drawable="@drawable/card_highlighted" /> <!-- focused -->
+    <item android:state_selected="true"
+        android:drawable="@drawable/card_highlighted"/><!-- selected -->
     <item android:state_hovered="true"
         android:drawable="@drawable/card_highlighted" /> <!-- hovered -->
     <item android:drawable="@drawable/card_default" /> <!-- default -->
+
 </selector>

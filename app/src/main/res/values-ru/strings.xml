@@ -22,4 +22,16 @@
     <string name="history_is_empty">История пуста</string>
     <string name="splash_screen_alert_dialog">Ошибка!</string>
     <string name="splash_screen_alert_dialog_message">Отсутствует камера в вашем устройстве. Дальнейшая работа не возможна.</string>
+    <string name="history_delete_item">Удалить</string>
+    <string name="history_share">Поделиться</string>
+    <string name="share_text_start">Эти данные были получены от отсканированного штрих-кода:</string>
+    <string name="share_text_codename">Данные кода: </string>
+    <string name="share_text_codetype">Тип кода: </string>
+    <string name="share_text_scandate">Дата сканирования: </string>
+    <string name="share_text_end">Код был отсканирован с помощью приложения QrCodeScanner от ioLab.
+        Получите это приложение бесплатно на http://play.google.com и будьте вооружены для
+        сканирования кодов в любое время!</string>
+    <string name="select_action">Действие:</string>
+    <string name="code_type">Тип кода:</string>
+    <string name="promt_to_scan">Поместите код в окно видоискателя для его распознавания</string>
 </resources>

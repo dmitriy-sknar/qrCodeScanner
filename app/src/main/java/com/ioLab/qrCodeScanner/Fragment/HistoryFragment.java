@@ -1,39 +1,36 @@
-package com.ioLab.qrCodeScanner;
+package com.ioLab.qrCodeScanner.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.ioLab.qrCodeScanner.Utils.History;
-import com.ioLab.qrCodeScanner.Utils.HistoryDataBinder;
-import com.ioLab.qrCodeScanner.Utils.MyQRCode;
+import com.ioLab.qrCodeScanner.R;
+import com.ioLab.qrCodeScanner.utils.History;
+import com.ioLab.qrCodeScanner.utils.HistoryDataBinder;
+import com.ioLab.qrCodeScanner.utils.MyQRCode;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-
-/**
- * Created by disknar on 01.08.2016.
- */
-
 public class HistoryFragment extends Fragment {
     private static final String ARG_PAGE = "ARG_PAGE";
+    private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
     private static final String KEY_CODE_TYPE = "format";
     private static final String KEY_COMMENTS = "comments";
@@ -78,11 +75,15 @@ public class HistoryFragment extends Fragment {
             refreshHistoryList(); //refresh listView
 
             String historyCleared = getResources().getString(R.string.history_cleared);
-            Toast.makeText(getActivity(), historyCleared, Toast.LENGTH_LONG).show();
-
+            Snackbar.make(this.getView(), historyCleared, Snackbar.LENGTH_LONG).show();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onCreateContextMenu(final ContextMenu menu,
+                                    final View v, final ContextMenu.ContextMenuInfo menuInfo) {
+
     }
 
     @Override
@@ -95,6 +96,7 @@ public class HistoryFragment extends Fragment {
         HashMap<String,String> map;
 
         if (myQRCodes != null) {
+            Collections.reverse(myQRCodes);
             for (int i = 0; i < myQRCodes.size(); i++) {
 
                 MyQRCode codeItem = myQRCodes.get(i);
@@ -105,6 +107,7 @@ public class HistoryFragment extends Fragment {
         else{
             map = new HashMap<String, String>();
             map.put(KEY_NAME, getResources().getString(R.string.history_is_empty));
+            map.put(KEY_ID, "9999999"); //dummy id to check if history is empty in HistoryDataBinder
             map.put(KEY_CODE_TYPE, "");
             map.put(KEY_COMMENTS, "");
             map.put(KEY_DATE, "");
@@ -115,39 +118,40 @@ public class HistoryFragment extends Fragment {
         bindingData = new HistoryDataBinder(getActivity(), codeDataCollection);
 
         Log.i("BEFORE", "<<------------- Before SetAdapter-------------->>");
-
         View rootView = inflater.inflate(R.layout.fr_history_page, container, false);
         // Get a reference to the ListView, and attach this adapter to it.
         listView = (ListView) rootView.findViewById(R.id.listview_history);
 //        listView.setAdapter(mHistoryAdapter); //old adapter
         listView.setAdapter(bindingData);
-
         Log.i("AFTER", "<<------------- After SetAdapter-------------->>");
+        registerForContextMenu(listView);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                if(myQRCodes == null){
-                    showDialog(getActivity());
-                    return;
-                }
-
-                MyQRCode myQRCode = myQRCodes.get(position);
-
-                Intent intent = new Intent(getActivity(), CodeDetails.class);
-                intent.putExtra("name", myQRCode.getName());
-                intent.putExtra("format", myQRCode.getCodeType());
-                intent.putExtra("comments", myQRCode.getComments());
-                Date dateOfScanning = myQRCode.getDateOfScanning();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm",
-                        getContext().getResources().getConfiguration().locale);
-                String date = dateFormat.format(dateOfScanning);
-                intent.putExtra("date", date);
-
-                startActivity(intent);
-            }
-        });
+        //listView onClickListener transferred to HistoryDataBinder adapter on each ListView row
+        //This is made to make selecting animation work. Otherwise animation does not work.
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                if(myQRCodes == null){
+//                    showDialog(getActivity());
+//                    return;
+//                }
+//
+//                MyQRCode myQRCode = myQRCodes.get(position);
+//
+//                Intent intent = new Intent(getActivity(), CodeDetails.class);
+//                intent.putExtra("name", myQRCode.getName());
+//                intent.putExtra("format", myQRCode.getCodeType());
+//                intent.putExtra("comments", myQRCode.getComments());
+//                Date dateOfScanning = myQRCode.getDateOfScanning();
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm",
+//                        getContext().getResources().getConfiguration().locale);
+//                String date = dateFormat.format(dateOfScanning);
+//                intent.putExtra("date", date);
+//
+//                startActivity(intent);
+//            }
+//        });
         return rootView;
     }
 
@@ -162,6 +166,7 @@ public class HistoryFragment extends Fragment {
                 getContext().getResources().getConfiguration().locale);
         String date = dateFormat.format(dateOfScanning);
         map.put(KEY_DATE, date);
+        map.put(KEY_ID, myQRCode.getId());
         return map;
     }
 
@@ -194,6 +199,7 @@ public class HistoryFragment extends Fragment {
         }
 
         bindingData.clear();
+        Collections.reverse(codesHistory);
         bindingData.addAll(codesHistory);
 
         bindingData.notifyDataSetChanged();

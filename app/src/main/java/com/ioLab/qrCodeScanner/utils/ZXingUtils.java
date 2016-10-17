@@ -1,12 +1,6 @@
-package com.ioLab.qrCodeScanner.Utils;
+package com.ioLab.qrCodeScanner.utils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.view.Gravity;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -17,9 +11,6 @@ import com.google.zxing.common.BitMatrix;
 import java.util.EnumMap;
 import java.util.Map;
 
-/**
- * Created by disknar on 12.08.2016.
- */
 public class ZXingUtils {
     private static final int WHITE = 0xFFFFFFFF;
     private static final int BLACK = 0xFF000000;
@@ -67,23 +58,60 @@ public class ZXingUtils {
         return null;
     }
 
-    //ToDo finish blank picture creation
-    public static Bitmap setBlankQrcode(Context context, String message, int width, int height){
-        TextView tv = new TextView(context);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height);
-        tv.setLayoutParams(layoutParams);
-        tv.setText(message);
-        tv.setTextColor(Color.DKGRAY);
-        tv.setBackgroundColor(Color.TRANSPARENT);
-        tv.setGravity(Gravity.CENTER);
-
-        Bitmap testB = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(testB);
-        tv.layout(0, 0, width, height);
-        tv.draw(c);
-
-        return testB;
+    public static BarcodeFormat getCodeType(String format){
+        if (format.equals(BarcodeFormat.AZTEC.toString())){
+            return BarcodeFormat.AZTEC;
+        }
+        else if (format.equals(BarcodeFormat.CODABAR.toString())){
+            return BarcodeFormat.CODABAR;
+        }
+        else if (format.equals(BarcodeFormat.CODE_39.toString())){
+            return BarcodeFormat.CODE_39;
+        }
+        else if (format.equals(BarcodeFormat.CODE_93.toString())){
+            return BarcodeFormat.CODE_93;
+        }
+        else if (format.equals(BarcodeFormat.CODE_128.toString())){
+            return BarcodeFormat.CODE_128;
+        }
+        else if (format.equals(BarcodeFormat.DATA_MATRIX.toString())){
+            return BarcodeFormat.DATA_MATRIX;
+        }
+        else if (format.equals(BarcodeFormat.EAN_8.toString())){
+            return BarcodeFormat.EAN_8;
+        }
+        else if (format.equals(BarcodeFormat.EAN_13.toString())){
+            return BarcodeFormat.EAN_13;
+        }
+        else if (format.equals(BarcodeFormat.ITF.toString())){
+            return BarcodeFormat.ITF;
+        }
+        else if (format.equals(BarcodeFormat.MAXICODE.toString())){
+            return BarcodeFormat.MAXICODE;
+        }
+        else if (format.equals(BarcodeFormat.PDF_417.toString())){
+            return BarcodeFormat.PDF_417;
+        }
+        else if (format.equals(BarcodeFormat.QR_CODE.toString())){
+            return BarcodeFormat.QR_CODE;
+        }
+        else if (format.equals(BarcodeFormat.RSS_14.toString())){
+            return BarcodeFormat.RSS_14;
+        }
+        else if (format.equals(BarcodeFormat.RSS_EXPANDED.toString())){
+            return BarcodeFormat.RSS_EXPANDED;
+        }
+        else if (format.equals(BarcodeFormat.UPC_A.toString())){
+            return BarcodeFormat.UPC_A;
+        }
+        else if (format.equals(BarcodeFormat.UPC_E.toString())){
+            return BarcodeFormat.UPC_E;
+        }
+        else if(format.equals(BarcodeFormat.UPC_EAN_EXTENSION.toString())) {
+            return BarcodeFormat.UPC_EAN_EXTENSION;
+        }
+        else{
+            return null;
+        }
     }
-
-
 }
