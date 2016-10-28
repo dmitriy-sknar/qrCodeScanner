@@ -224,7 +224,6 @@ public class Utils extends Activity{
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/*");
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
-//                    setShareIntent(shareIntent);
         mActivity.startActivity(shareIntent);
     }
 }
