@@ -7,6 +7,7 @@
     <color name="black_overlay">#66000000</color>
     <color name="colorControlHighlight">#80ff0004</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
     <color name="colorBackground">#ffebee</color>
 
     <color name="transparent">#00000000</color>

@@ -25,15 +25,26 @@ import com.ioLab.qrCodeScanner.CodeDetails;
 import com.ioLab.qrCodeScanner.R;
 import com.ioLab.qrCodeScanner.ScannerActivityEmb;
 import com.ioLab.qrCodeScanner.utils.History;
+import com.ioLab.qrCodeScanner.utils.HistoryChangeEvent;
 import com.ioLab.qrCodeScanner.utils.MyQRCode;
 import com.ioLab.qrCodeScanner.utils.Utils;
 import com.ioLab.qrCodeScanner.utils.ZXingUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_CODE_TYPE;
+import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_COMMENTS;
+import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_DATE;
+import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_ID;
+import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_NAME;
 
 public class ScanFragmentEmb extends Fragment {
 
@@ -77,7 +88,7 @@ public class ScanFragmentEmb extends Fragment {
             }
         });
 
-        setPageImage();
+        showLastCodeData();
 
         return view;
     }
@@ -122,10 +133,7 @@ public class ScanFragmentEmb extends Fragment {
             qr.setPath(absolutePath);
             history.updateCodeInDB(qr);
 
-            //get Main activity as a listener (interface) to notify HistoryFragment
-            HistoryFragment.OnHistoryChangedListener listener =
-                    (HistoryFragment.OnHistoryChangedListener) getActivity();
-            listener.onHistoryChange();
+            EventBus.getDefault().postSticky(new HistoryChangeEvent());
 
             history.close();
         }
@@ -137,7 +145,7 @@ public class ScanFragmentEmb extends Fragment {
         }
     }
 
-    private void setPageImage(){
+    private void showLastCodeData(){
         String name;
         BarcodeFormat barcodeType;
         String path;
@@ -189,13 +197,14 @@ public class ScanFragmentEmb extends Fragment {
                 }
 
                 Intent intent = new Intent(getActivity(), CodeDetails.class);
-                intent.putExtra("name", myQRCode.getName());
-                intent.putExtra("format", myQRCode.getCodeType());
-                intent.putExtra("comments", myQRCode.getComments());
+                intent.putExtra(KEY_NAME, myQRCode.getName());
+                intent.putExtra(KEY_CODE_TYPE, myQRCode.getCodeType());
+                intent.putExtra(KEY_COMMENTS, myQRCode.getComments());
+                intent.putExtra(KEY_ID, myQRCode.getId());
                 Date dateOfScanning = myQRCode.getDateOfScanning();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm", getContext().getResources().getConfiguration().locale);
                 String date = dateFormat.format(dateOfScanning);
-                intent.putExtra("date", date);
+                intent.putExtra(KEY_DATE, date);
 
                 startActivity(intent);
             }
@@ -219,5 +228,23 @@ public class ScanFragmentEmb extends Fragment {
             }
         });
         downloadDialog.show();
+    }
+
+    // EventBus block. To handle history changes.
+    // Last scanned code can be changed, so UI must be refreshed
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEvent(HistoryChangeEvent event) {
+        showLastCodeData();
     }
  }

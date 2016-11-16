@@ -169,10 +169,10 @@ public class Utils extends Activity{
         File file = new File(sdPath, id + "." + format);
         try {
             FileOutputStream fOut = new FileOutputStream(file);
-            if (format.equals("jpeg")) {
+            if (format.equals("png")) {
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
             }
-            else if(format.equals("png")){
+            else if(format.equals("jpeg")){
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
             }
             fOut.flush();

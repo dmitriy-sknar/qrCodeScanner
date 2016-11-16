@@ -7,6 +7,11 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MyQRCode {
+    public static final String KEY_ID = "id";
+    public static final String KEY_NAME = "name";
+    public static final String KEY_CODE_TYPE = "format";
+    public static final String KEY_COMMENTS = "comments";
+    public static final String KEY_DATE = "date";
 
     private String id;
     private String name;

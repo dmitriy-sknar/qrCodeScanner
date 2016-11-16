@@ -59,7 +59,7 @@ public class ScannerActivity extends FragmentActivity implements ZXingScannerVie
 
         StringBuilder sb = new StringBuilder();
         sb.append(rawResult.getText()).append("\n")
-                .append(getResources().getString(R.string.code_type))
+                .append(getResources().getString(R.string.share_text_codetype))
                 .append(" ")
                 .append(rawResult.getBarcodeFormat()
                         .toString());

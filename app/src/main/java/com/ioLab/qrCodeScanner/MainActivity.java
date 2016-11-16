@@ -5,7 +5,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -15,18 +14,19 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.ioLab.qrCodeScanner.fragment.AppFragmentPagerAdapter;
-import com.ioLab.qrCodeScanner.fragment.HistoryFragment;
 import com.ioLab.qrCodeScanner.utils.History;
+import com.ioLab.qrCodeScanner.utils.HistoryChangeEvent;
 import com.ioLab.qrCodeScanner.utils.MyQRCode;
 import com.ioLab.qrCodeScanner.utils.Utils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener,
-        HistoryFragment.OnHistoryChangedListener {
+        NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
@@ -134,8 +134,13 @@ public class MainActivity extends AppCompatActivity implements
         }
         else if (id == R.id.nav_clear_history) {
             History history = new History(getApplicationContext());
+            List<MyQRCode> list =  history.getAllCodesFromDB();
+            for(MyQRCode code : list){
+                Utils.delete(code.getPath());
+            }
             history.clearDB();
-            onHistoryChange(); //refresh listView
+            EventBus.getDefault().postSticky(new HistoryChangeEvent());
+
             String historyCleared = getResources().getString(R.string.history_cleared);
             Snackbar.make(mDrawerLayout, historyCleared, Snackbar.LENGTH_LONG).show();
         }
@@ -156,16 +161,6 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public void onHistoryChange() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        // Refreshing listView with changed data
-        AppFragmentPagerAdapter adapter = (AppFragmentPagerAdapter) viewPager.getAdapter();
-        HistoryFragment historyFragment = (HistoryFragment) fragmentManager
-                .findFragmentByTag((String) adapter.getSparseArray().get(1));
-        historyFragment.refreshHistoryList();
     }
 
     @Override

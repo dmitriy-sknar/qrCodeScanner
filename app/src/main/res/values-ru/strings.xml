@@ -33,8 +33,11 @@
         Получите это приложение бесплатно на http://play.google.com и будьте вооружены для
         сканирования кодов в любое время!</string>
     <string name="select_action">Выделено:</string>
-    <string name="code_type">Тип кода:</string>
     <string name="promt_to_scan">Поместите код в окно видоискателя для его распознавания</string>
     <string name="select_one_item">Выберите только один элемент</string>
     <string name="deleted_count">Удалено записей:</string>
+    <string name="generated_code_image">Сгенерированное изображение кода:</string>
+    <string name="save_png">Сохранить как PNG</string>
+    <string name="save_jpg">Сохранить как JPG</string>
+    <string name="saved_as">Сохранено как:</string>
 </resources>

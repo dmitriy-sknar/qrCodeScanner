@@ -24,8 +24,11 @@ import com.ioLab.qrCodeScanner.CodeDetails;
 import com.ioLab.qrCodeScanner.R;
 import com.ioLab.qrCodeScanner.ScannerActivity;
 import com.ioLab.qrCodeScanner.utils.History;
+import com.ioLab.qrCodeScanner.utils.HistoryChangeEvent;
 import com.ioLab.qrCodeScanner.utils.MyQRCode;
 import com.ioLab.qrCodeScanner.utils.ZXingUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -114,9 +117,7 @@ public class ScanFragment extends Fragment {
                 History history = new History(getContext());
                 history.insertCodeToDB(myQRCode);
 
-                //get Main activity as a listener (interface) to notify HistoryFragment
-                HistoryFragment.OnHistoryChangedListener listener = (HistoryFragment.OnHistoryChangedListener) getActivity();
-                listener.onHistoryChange();
+                EventBus.getDefault().postSticky(new HistoryChangeEvent());
 
             } else if (resultCode == Activity.RESULT_CANCELED){
                 String scanCancel = getResources().getString(R.string.toast_scan_cancel);

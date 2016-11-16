@@ -24,9 +24,14 @@ import android.widget.ListView;
 import com.ioLab.qrCodeScanner.CodeDetails;
 import com.ioLab.qrCodeScanner.R;
 import com.ioLab.qrCodeScanner.utils.History;
+import com.ioLab.qrCodeScanner.utils.HistoryChangeEvent;
 import com.ioLab.qrCodeScanner.utils.HistoryDataBinder;
 import com.ioLab.qrCodeScanner.utils.MyQRCode;
 import com.ioLab.qrCodeScanner.utils.Utils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,16 +40,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_CODE_TYPE;
+import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_COMMENTS;
+import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_DATE;
+import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_ID;
+import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_NAME;
+
 public class HistoryFragment extends Fragment implements AbsListView.MultiChoiceModeListener {
     private static final String ARG_PAGE = "ARG_PAGE";
-    private static final String KEY_ID = "id";
-    private static final String KEY_NAME = "name";
-    private static final String KEY_CODE_TYPE = "format";
-    private static final String KEY_COMMENTS = "comments";
-    private static final String KEY_DATE = "date";
     private final String LOG_TAG = "ioLabLog";
     private int mPage;
-//    private ArrayAdapter<String> mHistoryAdapter;
     private HistoryDataBinder bindingData;
     private List<MyQRCode> myQRCodes;
     private List<HashMap<String, String>> codesHistory;
@@ -228,10 +233,6 @@ public class HistoryFragment extends Fragment implements AbsListView.MultiChoice
         dialog.show();
     }
 
-    public interface OnHistoryChangedListener {
-        void onHistoryChange();
-    }
-
     // Called when the action mode is created; startActionMode() was called
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -335,4 +336,22 @@ public class HistoryFragment extends Fragment implements AbsListView.MultiChoice
         String title = getString(R.string.select_action) + " " + listView.getCheckedItemCount();
         mode.setTitle(title); //make text "Selected"
     }
+
+    //EventBus block. To handle history changes
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEvent(HistoryChangeEvent event) {
+        refreshHistoryList();
+    }
+
 }
