@@ -41,4 +41,10 @@
     <string name="save_jpg">Сохранить как JPG</string>
     <string name="saved_as">Сохранено как:</string>
     <string name="code_details_title">Данные кода</string>
+    <string name="nav_scan_new_code">Сканировать</string>
+    <string name="nav_share_recent_code">Отправить последний код</string>
+    <string name="nav_history">История</string>
+    <string name="nav_clear_history">Очистить историю</string>
+    <string name="nav_about_application">О приложении</string>
+    <string name="nav_about">Детали</string>
 </resources>

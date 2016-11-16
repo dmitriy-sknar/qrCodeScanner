@@ -158,7 +158,7 @@ public class ScannerActivityEmb extends Activity
             public void onClick(DialogInterface dialogInterface, int i) {
                 triggerScan();
                 Intent resultInt = new Intent();
-                resultInt.putExtra("ScanResultText", mResult.getText());
+                resultInt.putExtra("ScanResultText", mResult.getText().trim());
                 resultInt.putExtra("ScanResultFormat", mResult.getBarcodeFormat());
                 resultInt.putExtra("ScanResultTime", mResult.getTimestamp());
                 resultInt.putExtra("ScanResultImg", mResult.getBitmap());

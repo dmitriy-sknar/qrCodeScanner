@@ -51,5 +51,11 @@
     <string name="save_jpg">Save as JPG</string>
     <string name="saved_as">Saved as</string>
     <string name="code_details_title">Code details</string>
+    <string name="nav_scan_new_code">Scan new code</string>
+    <string name="nav_share_recent_code">Share recent code</string>
+    <string name="nav_history">History</string>
+    <string name="nav_clear_history">Clear history</string>
+    <string name="nav_about_application">About application</string>
+    <string name="nav_about">About</string>
 
 </resources>

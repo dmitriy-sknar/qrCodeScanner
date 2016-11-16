@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="none">
+    <group android:checkableBehavior="none"
+        android:id="@+id/menu_group">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_scan_new"
             android:icon="@mipmap/ic_plus_circle_outline"
-            android:title="Scan new code"/>
+            android:title="@string/nav_scan_new_code"/>
 
         <item
             android:id="@+id/nav_share_last_code"
             android:icon="@android:drawable/ic_menu_share"
-            android:title="Share recent code"/>
+            android:title="@string/nav_share_recent_code"/>
         <!--<item-->
             <!--android:id="@+id/nav_slideshow"-->
             <!--android:icon="@android:drawable/ic_menu_slideshow"-->
@@ -18,20 +19,18 @@
         <item
             android:id="@+id/nav_history"
             android:icon="@mipmap/ic_format_list_bulleted"
-            android:title="History"/>
+            android:title="@string/nav_history"/>
         <item
             android:id="@+id/nav_clear_history"
             android:icon="@android:drawable/ic_menu_delete"
-            android:title="Clear history"/>
+            android:title="@string/nav_clear_history"/>
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-           <item
-                android:id="@+id/nav_send"
-                android:icon="@android:drawable/ic_menu_send"
-                android:title="Send"/>
-        </menu>
-    </item>
-
+    <group android:checkableBehavior="none"
+        android:id="@+id/about_group">
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@android:drawable/ic_menu_help"
+                android:title="@string/nav_about_application"/>
+    </group>
 </menu>

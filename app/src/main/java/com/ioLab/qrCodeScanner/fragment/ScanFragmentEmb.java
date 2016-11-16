@@ -26,6 +26,7 @@ import com.ioLab.qrCodeScanner.R;
 import com.ioLab.qrCodeScanner.ScannerActivityEmb;
 import com.ioLab.qrCodeScanner.utils.History;
 import com.ioLab.qrCodeScanner.utils.HistoryChangeEvent;
+import com.ioLab.qrCodeScanner.utils.InitiateScanEvent;
 import com.ioLab.qrCodeScanner.utils.MyQRCode;
 import com.ioLab.qrCodeScanner.utils.Utils;
 import com.ioLab.qrCodeScanner.utils.ZXingUtils;
@@ -246,5 +247,10 @@ public class ScanFragmentEmb extends Fragment {
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEvent(HistoryChangeEvent event) {
         showLastCodeData();
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEvent(InitiateScanEvent event) {
+        initiateScan();
     }
  }

@@ -85,6 +85,7 @@ public class HistoryFragment extends Fragment implements AbsListView.MultiChoice
 
             history.clearDB();
             refreshHistoryList(); //refresh listView
+            EventBus.getDefault().postSticky(new HistoryChangeEvent());
 
             String historyCleared = getResources().getString(R.string.history_cleared);
             Snackbar.make(this.getView(), historyCleared, Snackbar.LENGTH_LONG).show();

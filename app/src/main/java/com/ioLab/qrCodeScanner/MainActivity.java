@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import com.ioLab.qrCodeScanner.fragment.AppFragmentPagerAdapter;
 import com.ioLab.qrCodeScanner.utils.History;
 import com.ioLab.qrCodeScanner.utils.HistoryChangeEvent;
+import com.ioLab.qrCodeScanner.utils.InitiateScanEvent;
 import com.ioLab.qrCodeScanner.utils.MyQRCode;
 import com.ioLab.qrCodeScanner.utils.Utils;
 
@@ -111,8 +112,9 @@ public class MainActivity extends AppCompatActivity implements
 
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-
+        if (id == R.id.nav_scan_new) {
+            viewPager.setCurrentItem(0);
+            EventBus.getDefault().post(new InitiateScanEvent());
         }
         else if (id == R.id.nav_share_last_code) {
             history = new History(this);
