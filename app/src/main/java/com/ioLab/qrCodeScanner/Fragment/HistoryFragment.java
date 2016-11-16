@@ -83,6 +83,10 @@ public class HistoryFragment extends Fragment implements AbsListView.MultiChoice
         int id = item.getItemId();
         if (id == R.id.action_clear_history_db) {
 
+            List<MyQRCode> list =  history.getAllCodesFromDB();
+            for(MyQRCode code : list){
+                Utils.delete(code.getPath());
+            }
             history.clearDB();
             refreshHistoryList(); //refresh listView
             EventBus.getDefault().postSticky(new HistoryChangeEvent());

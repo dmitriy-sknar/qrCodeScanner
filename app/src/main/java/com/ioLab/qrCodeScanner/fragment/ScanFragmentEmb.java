@@ -221,7 +221,7 @@ public class ScanFragmentEmb extends Fragment {
 
     private void showDialog(final Activity act) {
         final AlertDialog.Builder downloadDialog = new AlertDialog.Builder(act);
-        downloadDialog.setTitle(R.string.splash_screen_alert_dialog);
+//        downloadDialog.setTitle(R.string.splash_screen_alert_dialog);
         downloadDialog.setMessage(R.string.history_is_empty);
         downloadDialog.setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {

@@ -58,4 +58,10 @@
     <string name="nav_about_application">About application</string>
     <string name="nav_about">About</string>
 
+    <string name="nav_about_application_text">\n
+        <b>Qr Code Scanner 1.0 </b> \n
+        Scan any codes and share them. \n
+        For questions and proposals please contact: \n
+        <b>dmitriy.sknar@gmail.com</b>\n
+    </string>
 </resources>

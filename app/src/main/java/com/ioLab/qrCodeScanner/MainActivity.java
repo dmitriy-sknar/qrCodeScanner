@@ -1,5 +1,7 @@
 package com.ioLab.qrCodeScanner;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -146,12 +148,17 @@ public class MainActivity extends AppCompatActivity implements
             String historyCleared = getResources().getString(R.string.history_cleared);
             Snackbar.make(mDrawerLayout, historyCleared, Snackbar.LENGTH_LONG).show();
         }
-//        else if (id == R.id.nav_share) {
-//
-//        }
-//        else if (id == R.id.nav_send) {
-//
-//        }
+        else if (id == R.id.nav_about) {
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setTitle(R.string.nav_about_application);
+            dialog.setMessage(R.string.nav_about_application_text);
+            dialog.setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            dialog.show();
+        }
         return true;
     }
 
