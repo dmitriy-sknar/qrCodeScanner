@@ -36,12 +36,13 @@ import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_CODE_TYPE;
 import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_DATE;
 import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_ID;
 import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_NAME;
+import static com.ioLab.qrCodeScanner.utils.ZXingUtils.getBarCodeSizeForVerticalUI;
 
 public class CodeDetails extends AppCompatActivity{
 
     private Activity mActivity;
     private Intent intent;
-    private Bitmap bitmap;
+    private Bitmap mBitmap;
     private MyQRCode myQRCode;
 
     @BindView(R.id.backdrop)
@@ -87,16 +88,17 @@ public class CodeDetails extends AppCompatActivity{
         code_type_data.setText(intent.getStringExtra(KEY_CODE_TYPE));
         code_date_data.setText(intent.getStringExtra(KEY_DATE));
 
-        bitmap = null;
+        mBitmap = null;
+        int barcodeSize = getBarCodeSizeForVerticalUI(this);
         try {
-            bitmap = ZXingUtils.encodeAsBitmap(intent.getStringExtra(KEY_NAME),
+            mBitmap = ZXingUtils.encodeAsBitmap(intent.getStringExtra(KEY_NAME),
                     ZXingUtils.getCodeType(intent.getStringExtra(KEY_CODE_TYPE)),
-                    1024,
-                    1024);
+                    barcodeSize,
+                    barcodeSize);
         } catch (WriterException e) {
             e.printStackTrace();
         }
-        generated_code_image.setImageBitmap(bitmap);
+        generated_code_image.setImageBitmap(mBitmap);
     }
 
     private void initializToolbar() {
@@ -134,6 +136,17 @@ public class CodeDetails extends AppCompatActivity{
     @OnClick(R.id.save_png)
     public void savePNG(Button button) {
         //save image to file and show path
+        Bitmap bitmap = mBitmap;
+        //regenerate bitmap with higher resolution to save
+        try {
+            bitmap = ZXingUtils.encodeAsBitmap(intent.getStringExtra(KEY_NAME),
+                    ZXingUtils.getCodeType(intent.getStringExtra(KEY_CODE_TYPE)),
+                    1024,
+                    1024);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+
         StringBuilder id = new StringBuilder(intent.getStringExtra(KEY_DATE));
         String fileName = id.substring(0,10) + "_" + (int) Math.round(100000*Math.random());
         String absolutePath = Utils.writeFileSD(bitmap, "png", fileName);
@@ -145,6 +158,17 @@ public class CodeDetails extends AppCompatActivity{
     @OnClick(R.id.save_jpg)
     public void saveJPG(Button button) {
         //save image to file and show path
+        Bitmap bitmap = mBitmap;
+        //regenerate bitmap with higher resolution to save
+        try {
+            bitmap = ZXingUtils.encodeAsBitmap(intent.getStringExtra(KEY_NAME),
+                    ZXingUtils.getCodeType(intent.getStringExtra(KEY_CODE_TYPE)),
+                    1024,
+                    1024);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+
         StringBuilder id = new StringBuilder(intent.getStringExtra(KEY_DATE));
         String fileName = id.substring(0,10) + "_" + (int) Math.round(100000*Math.random());
         String absolutePath = Utils.writeFileSD(bitmap, "jpeg", fileName);

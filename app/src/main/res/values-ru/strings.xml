@@ -26,7 +26,7 @@
     <string name="history_delete_item">Удалить</string>
     <string name="history_share">Поделиться</string>
     <string name="share_text_start">Данные отсканированного штрих-кода:</string>
-    <string name="share_text_codename">Данные кода: </string>
+    <string name="share_text_codename">Данные: </string>
     <string name="share_text_codetype">Тип кода: </string>
     <string name="share_text_scandate">Дата сканирования: </string>
     <string name="share_text_end">Код был отсканирован с помощью приложения QrCodeScanner от ioLab.
@@ -40,4 +40,5 @@
     <string name="save_png">Сохранить как PNG</string>
     <string name="save_jpg">Сохранить как JPG</string>
     <string name="saved_as">Сохранено как:</string>
+    <string name="code_details_title">Данные кода</string>
 </resources>

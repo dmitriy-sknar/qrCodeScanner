@@ -41,7 +41,6 @@
         Get it on http://play.google.com and be armed to scan barcodes by yourself.</string>
     <string name="select_action">Selected: </string>
 
-
     <string name="turn_on_flashlight">Turn on Flashlight</string>
     <string name="turn_off_flashlight">Turn off Flashlight</string>
     <string name="promt_to_scan">Place barcode into viewfinder to scan it.</string>
@@ -51,5 +50,6 @@
     <string name="save_png">Save as PNG</string>
     <string name="save_jpg">Save as JPG</string>
     <string name="saved_as">Saved as</string>
+    <string name="code_details_title">Code details</string>
 
 </resources>

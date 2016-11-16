@@ -45,6 +45,7 @@
                 android:id="@+id/details_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:title="@string/code_details_title"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:layout_collapseMode="pin" />
 
@@ -58,10 +59,9 @@
         android:layout_width="wrap_content"
         app:layout_anchor="@id/appbar"
         app:layout_anchorGravity="bottom|right|end"
-        android:src="@android:drawable/ic_menu_share"
+        android:src="@mipmap/ic_share_variant"
         android:layout_margin="@dimen/fab_margin"
-        android:clickable="true"
-        android:tint="@color/colorWhite"/>
+        android:clickable="true"/>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -159,10 +159,10 @@
                     <android.support.v7.widget.AppCompatImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
+                        android:layout_margin="8dp"
+                        android:layout_gravity="center"
                         android:scaleType="centerInside"
                         android:id="@+id/generated_code_image"/>
-
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>

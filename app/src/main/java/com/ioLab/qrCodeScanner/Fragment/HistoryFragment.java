@@ -273,6 +273,7 @@ public class HistoryFragment extends Fragment implements AbsListView.MultiChoice
                     deletedItemsCount++;
                 }
                 refreshHistoryList();
+                EventBus.getDefault().postSticky(new HistoryChangeEvent());
 
                 String message = getString(R.string.deleted_count) + " " + deletedItemsCount;
 

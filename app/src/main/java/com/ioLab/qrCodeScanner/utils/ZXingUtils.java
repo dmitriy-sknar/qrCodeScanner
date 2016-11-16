@@ -1,6 +1,9 @@
 package com.ioLab.qrCodeScanner.utils;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.view.Display;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -33,19 +36,49 @@ public class ZXingUtils {
             // Unsupported format
             return null;
         }
-        int width = result.getWidth();
-        int height = result.getHeight();
-        int[] pixels = new int[width * height];
-        for (int y = 0; y < height; y++) {
-            int offset = y * width;
-            for (int x = 0; x < width; x++) {
-                pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
+        if(!format.equals(BarcodeFormat.DATA_MATRIX)){
+            int width = result.getWidth();
+            int height = result.getHeight();
+            int[] pixels = new int[width * height];
+            for (int y = 0; y < height; y++) {
+                int offset = y * width;
+                for (int x = 0; x < width; x++) {
+                    pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
+                }
             }
-        }
 
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-        return bitmap;
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+            bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+            return bitmap;
+        }
+        else{
+            int width = result.getWidth();
+            int height = result.getHeight();
+
+            // calculating the scaling factor
+            int pixelsize = img_width/width;
+            if (pixelsize > img_height/height)
+            {
+                pixelsize = img_height/height;
+            }
+            int[] pixels = new int[img_width * img_height];
+            for (int y = 0; y < height; y++) {
+                int offset = y * img_width * pixelsize;
+                // scaling pixel height
+                for (int pixelsizeHeight = 0; pixelsizeHeight < pixelsize; pixelsizeHeight++, offset+=img_width) {
+                    for (int x = 0; x < width; x++) {
+                        int color = result.get(x, y) ? BLACK : WHITE;
+                        // scaling pixel width
+                        for (int pixelsizeWidth = 0; pixelsizeWidth < pixelsize; pixelsizeWidth++) {
+                            pixels[offset + x * pixelsize + pixelsizeWidth] = color;
+                        }
+                    }
+                }
+            }
+            Bitmap bitmap = Bitmap.createBitmap(img_width, img_height, Bitmap.Config.ARGB_8888);
+            bitmap.setPixels(pixels, 0, img_width, 0, 0, img_width, img_height);
+            return bitmap;
+        }
     }
 
     private static String guessAppropriateEncoding(CharSequence contents) {
@@ -113,5 +146,25 @@ public class ZXingUtils {
         else{
             return null;
         }
+    }
+
+    public static int getBarCodeSizeForVerticalUI(Activity activity){
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        float barcodeSize = width < height ? width : height;
+        return (int) Math.round(barcodeSize  * 0.7);
+    }
+
+    public static int getBarCodeSizeForHorisontalUI(Activity activity){
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        float barcodeSize = width > height ? width : height;
+        return (int) Math.round(barcodeSize  * 0.7);
     }
 }
