@@ -3,6 +3,7 @@ package com.ioLab.qrCodeScanner.utils;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
@@ -213,11 +214,11 @@ public class Utils extends Activity{
     public static void shareCode(Activity mActivity, String name, String type, String date){
         String shareText =
                 mActivity.getApplicationContext().getResources().getString(R.string.share_text_start) + "\n"
-                        + mActivity.getApplicationContext().getResources().getString(R.string.share_text_codename)
+                        + mActivity.getApplicationContext().getResources().getString(R.string.share_text_codename) + " "
                         + name + "\n"
-                        + mActivity.getApplicationContext().getResources().getString(R.string.share_text_codetype)
+                        + mActivity.getApplicationContext().getResources().getString(R.string.share_text_codetype) + " "
                         + type + "\n"
-                        + mActivity.getApplicationContext().getResources().getString(R.string.share_text_scandate)
+                        + mActivity.getApplicationContext().getResources().getString(R.string.share_text_scandate) + " "
                         + date + "\n" + "\n"
                         + mActivity.getApplicationContext().getResources().getString(R.string.share_text_end);
 
@@ -225,5 +226,33 @@ public class Utils extends Activity{
         shareIntent.setType("text/*");
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
         mActivity.startActivity(shareIntent);
+    }
+
+    public static void shareCodeWithText(Activity mActivity, String name, String type, String date, String path) {
+        String shareText =
+                mActivity.getApplicationContext().getResources().getString(R.string.share_text_start) + "\n"
+                        + mActivity.getApplicationContext().getResources().getString(R.string.share_text_codename) + " "
+                        + name + "\n"
+                        + mActivity.getApplicationContext().getResources().getString(R.string.share_text_codetype) + " "
+                        + type + "\n"
+                        + mActivity.getApplicationContext().getResources().getString(R.string.share_text_scandate) + " "
+                        + date + "\n" + "\n"
+                        + mActivity.getApplicationContext().getResources().getString(R.string.share_text_end);
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+
+        Uri uri = Uri.fromFile(new File(path));
+//        shareIntent.setType("text/html");
+        shareIntent.setType("image/*");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, mActivity.getString(R.string.share_text_subject));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        mActivity.startActivity(Intent.createChooser(shareIntent, "Share Deal"));
+
+//        code to use if multiple images will be sent
+//        Intent shareIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+//        shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
+//        shareIntent.setType("image/*");
     }
 }

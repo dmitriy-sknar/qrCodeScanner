@@ -52,27 +52,4 @@ public class GeneratorFragment extends Fragment {
         return view;
     }
 
-//                String result = data.getExtras().get("ScanResultText").toString();
-//                codeText.setText(result);
-//                BarcodeFormat barcodeType = (BarcodeFormat) data.getExtras().get("ScanResultFormat");
-////                Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
-//
-//                Display display = getActivity().getWindowManager().getDefaultDisplay();
-//                Point size = new Point();
-//                display.getSize(size);
-//                int width = size.x;
-//                int height = size.y;
-//                float barcodeSize = width > height ? width : height;
-//                int barcodeSizeInt = Math.round(barcodeSize);
-//                try {
-//                    Bitmap bitmap = encodeAsBitmap(result, barcodeType, barcodeSizeInt, barcodeSizeInt);
-//                    image.setImageBitmap(bitmap);
-//                } catch (WriterException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            } else if (resultCode == Activity.RESULT_CANCELED){
-//                String scanCancel = getResources().getString(R.string.toast_scan_cancel);
-//                Toast.makeText(getContext(), scanCancel, Toast.LENGTH_LONG).show();
-//
  }

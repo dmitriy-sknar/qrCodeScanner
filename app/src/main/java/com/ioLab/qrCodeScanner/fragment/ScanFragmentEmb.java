@@ -46,6 +46,7 @@ import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_COMMENTS;
 import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_DATE;
 import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_ID;
 import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_NAME;
+import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_PATH;
 
 public class ScanFragmentEmb extends Fragment {
 
@@ -206,6 +207,7 @@ public class ScanFragmentEmb extends Fragment {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm", getContext().getResources().getConfiguration().locale);
                 String date = dateFormat.format(dateOfScanning);
                 intent.putExtra(KEY_DATE, date);
+                intent.putExtra(KEY_PATH, myQRCode.getPath());
 
                 startActivity(intent);
             }

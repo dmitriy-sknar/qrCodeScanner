@@ -128,10 +128,11 @@ public class MainActivity extends AppCompatActivity implements
                     this.getResources().getConfiguration().locale);
             String date = dateFormat.format(dateOfScanning);
 
-            Utils.shareCode(this,
+            Utils.shareCodeWithText(this,
                     qrCode.getName(),
                     qrCode.getCodeType(),
-                    date);
+                    date,
+                    qrCode.getPath());
         }
         else if (id == R.id.nav_history) {
             viewPager.setCurrentItem(1);

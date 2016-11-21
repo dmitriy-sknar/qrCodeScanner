@@ -43,9 +43,9 @@
         </activity>
         <activity
             android:name="com.ioLab.qrCodeScanner.ScannerActivityEmb"
-            android:screenOrientation="landscape"
             android:stateNotNeeded="true"
             android:windowSoftInputMode="stateAlwaysHidden">
+            <!--android:screenOrientation="landscape"-->
         </activity>
     </application>
 </manifest>

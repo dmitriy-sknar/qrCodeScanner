@@ -45,6 +45,7 @@ import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_COMMENTS;
 import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_DATE;
 import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_ID;
 import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_NAME;
+import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_PATH;
 
 public class HistoryFragment extends Fragment implements AbsListView.MultiChoiceModeListener {
     private static final String ARG_PAGE = "ARG_PAGE";
@@ -128,6 +129,7 @@ public class HistoryFragment extends Fragment implements AbsListView.MultiChoice
             map.put(KEY_CODE_TYPE, "");
             map.put(KEY_COMMENTS, "");
             map.put(KEY_DATE, "");
+            map.put(KEY_PATH, "");
 
             codeDataCollection.add(map);
         }
@@ -168,6 +170,7 @@ public class HistoryFragment extends Fragment implements AbsListView.MultiChoice
                 intent.putExtra("comments", hm.get(KEY_COMMENTS));
                 intent.putExtra("date", hm.get(KEY_DATE));
                 intent.putExtra("id", hm.get(KEY_ID));
+                intent.putExtra("path", hm.get(KEY_PATH));
 
                 startActivity(intent);
             }
@@ -186,6 +189,7 @@ public class HistoryFragment extends Fragment implements AbsListView.MultiChoice
         String date = dateFormat.format(dateOfScanning);
         map.put(KEY_DATE, date);
         map.put(KEY_ID, myQRCode.getId());
+        map.put(KEY_PATH, myQRCode.getPath());
         return map;
     }
 

@@ -12,6 +12,7 @@ public class MyQRCode {
     public static final String KEY_CODE_TYPE = "format";
     public static final String KEY_COMMENTS = "comments";
     public static final String KEY_DATE = "date";
+    public static final String KEY_PATH = "path";
 
     private String id;
     private String name;

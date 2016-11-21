@@ -33,13 +33,14 @@
     <string name="dummyStrCodeDate">01.01.2000</string>
     <string name="history_delete_item">Delete</string>
     <string name="history_share">Share</string>
-    <string name="share_text_start">This data was retrieved from scanned barcode: </string>
-    <string name="share_text_codename">Code data: </string>
-    <string name="share_text_codetype">Code type: </string>
-    <string name="share_text_scandate">Scan date: </string>
+    <string name="share_text_start">This data was retrieved from scanned barcode:</string>
+    <string name="share_text_codename">Code data:</string>
+    <string name="share_text_codetype">Code type:</string>
+    <string name="share_text_scandate">Scan date:</string>
+    <string name="share_text_subject">Scanned code data</string>
     <string name="share_text_end">The barcode was scanned by ioLab QrCodeScanner application.
         Get it on http://play.google.com and be armed to scan barcodes by yourself.</string>
-    <string name="select_action">Selected: </string>
+    <string name="select_action">Selected:</string>
 
     <string name="turn_on_flashlight">Turn on Flashlight</string>
     <string name="turn_off_flashlight">Turn off Flashlight</string>

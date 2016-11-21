@@ -29,6 +29,7 @@
     <string name="share_text_codename">Данные: </string>
     <string name="share_text_codetype">Тип кода: </string>
     <string name="share_text_scandate">Дата сканирования: </string>
+    <string name="share_text_subject">Данные отсканированного кода</string>
     <string name="share_text_end">Код был отсканирован с помощью приложения QrCodeScanner от ioLab.
         Получите это приложение бесплатно на http://play.google.com и будьте вооружены для
         сканирования кодов в любое время!</string>

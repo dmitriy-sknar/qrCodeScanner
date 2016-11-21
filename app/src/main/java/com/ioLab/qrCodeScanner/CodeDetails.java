@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +12,6 @@ import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -36,6 +34,7 @@ import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_CODE_TYPE;
 import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_DATE;
 import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_ID;
 import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_NAME;
+import static com.ioLab.qrCodeScanner.utils.MyQRCode.KEY_PATH;
 import static com.ioLab.qrCodeScanner.utils.ZXingUtils.getBarCodeSizeForVerticalUI;
 
 public class CodeDetails extends AppCompatActivity{
@@ -44,6 +43,7 @@ public class CodeDetails extends AppCompatActivity{
     private Intent intent;
     private Bitmap mBitmap;
     private MyQRCode myQRCode;
+    private File imgFile;
 
     @BindView(R.id.backdrop)
     AppCompatImageView backdrop;
@@ -60,7 +60,6 @@ public class CodeDetails extends AppCompatActivity{
     @BindView(R.id.generated_code_image)
     AppCompatImageView generated_code_image;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,17 +67,14 @@ public class CodeDetails extends AppCompatActivity{
         ButterKnife.bind(this);
 
         mActivity = this;
-
         initializToolbar();
-
         intent = getIntent();
-        initializFAB(intent);
 
         History history = new History(this);
         String id = intent.getStringExtra(KEY_ID);
         myQRCode = history.getCodeById(Long.parseLong(id));
         String path = myQRCode.getPath();
-        File imgFile = new File(path);
+        imgFile = new File(path);
         if(imgFile.exists()){
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             backdrop.setImageBitmap(myBitmap);
@@ -106,31 +102,15 @@ public class CodeDetails extends AppCompatActivity{
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(""); //is title needed?
-    }
-
-    private void initializFAB(final Intent intent) {
-        FloatingActionButton fab =
-                (FloatingActionButton) findViewById(R.id.fab_details_activity);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.shareCode(mActivity,
-                        intent.getStringExtra(KEY_NAME),
-                        intent.getStringExtra(KEY_CODE_TYPE),
-                        intent.getStringExtra(KEY_DATE));
-            }
-        });
     }
 
     @OnClick(R.id.fab_details_activity)
-    public void shareCode(Button button) {
-        Utils.shareCode(mActivity,
+    public void shareCode(FloatingActionButton floatingActionButton) {
+        Utils.shareCodeWithText(mActivity,
                 intent.getStringExtra(KEY_NAME),
                 intent.getStringExtra(KEY_CODE_TYPE),
-                intent.getStringExtra(KEY_DATE));
+                intent.getStringExtra(KEY_DATE),
+                intent.getStringExtra(KEY_PATH));
     }
 
     @OnClick(R.id.save_png)
